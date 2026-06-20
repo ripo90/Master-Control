@@ -619,7 +619,7 @@
     <!-- Book Page -->
     <div style="position:relative;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);background:#000;cursor:pointer;"
       id="fb-flip-wrap">
-      <div id="fb-flip-inner" style="transform-style:preserve-3d;transition:transform 0.5s ease;">
+      <div id="fb-flip-inner">
         <img id="fb-img" src="" alt="বইয়ের পেজ" style="width:100%;display:block;">
       </div>
       <!-- Corner fold -->
@@ -696,7 +696,7 @@
   <div class="disclaimer-hero">
     <div style="position:relative; z-index:1;">
       <div class="disclaimer-badge">🌿 প্রাকৃতিক ও বিজ্ঞানসম্মত পদ্ধতি</div>
-      <div class="disclaimer-icon"><img src="images/logo-0ab19f16.png" alt="Master Control" style="width:180px;height:auto;object-fit:contain;"></div>
+      <div class="disclaimer-icon"><img src="images/logo-0ab19f16.png" alt="Master Control" style="width:120px;height:auto;object-fit:contain;"></div>
       <div class="disclaimer-title">মাস্টার কন্ট্রোল</div>
       <div class="disclaimer-subtitle">শুরু করার আগে কিছু গুরুত্বপূর্ণ কথা</div>
     </div>
@@ -762,7 +762,7 @@
 
 <!-- ONBOARDING -->
 <div id="onboarding">
-  <img src="images/logo-0ab19f16.png" alt="Master Control" style="width:200px;height:auto;object-fit:contain;margin-bottom:16px;display:block;">
+  <img src="images/logo-0ab19f16.png" alt="Master Control" style="width:130px;height:auto;object-fit:contain;margin-bottom:16px;display:block;">
   <div class="onboard-title">মাস্টার কন্ট্রোল</div>
   <div class="onboard-subtitle">পেলভিক হেলথ, রিকভারি ও মানসিক শক্তির জন্য আপনার ব্যক্তিগত সঙ্গী</div>
   <div style="width:100%; margin-bottom:16px;">
@@ -793,7 +793,7 @@
 
 
 <!-- FREE FLIPBOOK MODAL (e.g. "তোমার শক্তি তুমি") -->
-<div id="flipbook-modal-free" style="display:none; position:fixed; inset:0; background:#111; z-index:800; flex-direction:column; touch-action:pan-y; overflow:hidden;">
+<div id="flipbook-modal-free" style="display:none; position:fixed; inset:0; background:#111; z-index:800; flex-direction:column; touch-action:none;">
   <!-- Header -->
   <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(0,0,0,0.9); flex-shrink:0; border-bottom:1px solid rgba(255,255,255,0.08);">
     <div style="display:flex; align-items:center; gap:10px;">
@@ -810,7 +810,7 @@
   </div>
 
   <!-- Page display area -->
-  <div id="fb-free-page-area" style="flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative; background:#1a1a2e; touch-action:none; user-select:none; -webkit-user-select:none;">
+  <div id="fb-free-page-area" style="flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative; background:#1a1a2e;">
     <!-- Page image with flip animation -->
     <div id="fb-free-flip-container" style="position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
       <img id="fb-free-img" src="" alt="" style="max-height:100%; max-width:100%; object-fit:contain; border-radius:4px; box-shadow:0 8px 40px rgba(0,0,0,0.6); transition:transform 0.3s ease, opacity 0.3s ease; transform-origin:center;">
@@ -941,7 +941,7 @@
   <div class="topbar">
     <div>
       <div style="display:flex;align-items:center;gap:8px;">
-      <img src="images/logo-0ab19f16.png" alt="" style="width:44px;height:44px;object-fit:contain;flex-shrink:0;">
+      <img src="images/logo-0ab19f16.png" alt="" style="width:36px;height:36px;object-fit:contain;flex-shrink:0;">
       <div class="topbar-title" id="topbar-title">🏠 হোম</div>
     </div>
       <div class="topbar-subtitle" id="topbar-date"></div>
@@ -4368,23 +4368,10 @@ function fbFreeClose() {
 }
 function fbFreeSetupTouch() {
   const area = document.getElementById('fb-free-page-area');
-  let startY = 0;
-  area.ontouchstart = (e) => {
-    fbFreeTouchStartX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    e.stopPropagation();
-  };
-  area.ontouchmove = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+  area.ontouchstart = (e) => { fbFreeTouchStartX = e.touches[0].clientX; };
   area.ontouchend = (e) => {
     const dx = e.changedTouches[0].clientX - fbFreeTouchStartX;
-    const dy = e.changedTouches[0].clientY - startY;
-    // শুধু horizontal swipe হলেই পেজ উল্টাবে
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
-      dx < 0 ? fbFreeNext() : fbFreePrev();
-    }
+    if (Math.abs(dx) > 50) { dx < 0 ? fbFreeNext() : fbFreePrev(); }
   };
   // Keyboard support
   document.onkeydown = (e) => {
@@ -4511,33 +4498,15 @@ function fbRenderPage(idx) {
 function fbChangePage(dir) {
   const next = fbPreviewPage + dir;
   if (next < 0 || next >= fbPages.length) return;
-  const inner = document.getElementById('fb-flip-inner');
-  const anim = dir > 0 ? 'flipLeft' : 'flipRight';
-  inner.style.animation = `${anim} 0.45s ease forwards`;
+  const img = document.getElementById('fb-img');
+  img.style.transition = 'opacity 0.15s ease';
+  img.style.opacity = '0';
   setTimeout(() => {
     fbPreviewPage = next;
     fbRenderPage(fbPreviewPage);
-    inner.style.animation = '';
-  }, 220);
+    img.style.opacity = '1';
+  }, 150);
 }
-
-// Flipbook page animations (CSS injected via JS)
-(function() {
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes flipLeft {
-      0%{transform:perspective(1200px) rotateY(0deg);}
-      50%{transform:perspective(1200px) rotateY(-90deg);}
-      100%{transform:perspective(1200px) rotateY(0deg);}
-    }
-    @keyframes flipRight {
-      0%{transform:perspective(1200px) rotateY(0deg);}
-      50%{transform:perspective(1200px) rotateY(90deg);}
-      100%{transform:perspective(1200px) rotateY(0deg);}
-    }
-  `;
-  document.head.appendChild(style);
-})();
 
 // PWA SERVICE WORKER — only on real hosting, not claude.ai preview
 if ('serviceWorker' in navigator && 
