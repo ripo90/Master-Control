@@ -598,47 +598,25 @@
 <canvas id="confetti-canvas" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
 <!-- FLIPBOOK MODAL (simple viewer — both books fully unlocked with app purchase) -->
-<div id="flipbook-modal" style="display:none;position:fixed;inset:0;z-index:997;background:var(--bg);overflow-y:auto;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">
+<div id="flipbook-modal" style="display:none;position:fixed;inset:0;z-index:997;background:#0a0a0a;flex-direction:column;">
 
   <!-- Header -->
-  <div style="background:rgba(15,29,46,0.96);backdrop-filter:blur(12px);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;">
+  <div style="background:rgba(15,29,46,0.98);backdrop-filter:blur(12px);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);flex-shrink:0;">
     <button onclick="closeFlipbook()" style="width:36px;height:36px;border-radius:10px;background:var(--surface);border:none;color:var(--text2);font-size:20px;cursor:pointer;">←</button>
-    <div>
+    <div style="flex:1;">
       <div style="font-size:16px;font-weight:700;" id="fb-modal-title">📖 বই</div>
-      <div style="font-size:11px;color:var(--text3);font-family:var(--font-ui);">মাস্টার কন্ট্রোল</div>
+      <div style="font-size:11px;color:var(--text3);font-family:var(--font-ui);">উপর-নিচে স্ক্রোল করে পড়ুন</div>
     </div>
+    <div style="background:rgba(99,102,241,0.15);color:var(--accent);padding:3px 10px;border-radius:20px;font-size:11px;font-family:var(--font-ui);" id="fb-page-num">লোড হচ্ছে...</div>
   </div>
 
-  <!-- Flipbook Viewer -->
-  <div style="padding:16px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-      <div style="font-size:13px;color:var(--text3);font-family:var(--font-ui);">📄 পেজ পড়ুন</div>
-      <div style="background:rgba(99,102,241,0.15);color:var(--accent);padding:3px 10px;border-radius:20px;font-size:11px;font-family:var(--font-ui);" id="fb-page-num">১ / ৪৬</div>
+  <!-- Vertical Scroll Pages -->
+  <div id="fb-scroll-area" style="flex:1;overflow-y:auto;background:#0a0a0a;-webkit-overflow-scrolling:touch;">
+    <div id="fb-pages-container" style="max-width:600px;margin:0 auto;padding:12px;display:flex;flex-direction:column;gap:8px;">
+      <!-- Pages injected here by JS -->
     </div>
-
-    <!-- Book Page -->
-    <div style="position:relative;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);background:#000;cursor:pointer;max-width:480px;margin:0 auto;"
-      id="fb-flip-wrap">
-      <div id="fb-flip-inner">
-        <img id="fb-img" src="" alt="বইয়ের পেজ" draggable="false" oncontextmenu="return false;" style="width:100%;display:block;pointer-events:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">
-      </div>
-      <!-- Corner fold -->
-      <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;background:linear-gradient(225deg,rgba(99,102,241,0.4) 40%,transparent 40%);pointer-events:none;border-radius:0 0 14px 0;"></div>
-    </div>
-
-    <!-- Controls -->
-    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px;">
-      <button id="fb-prev" onclick="fbChangePage(-1)"
-        style="width:44px;height:44px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;"
-        disabled>‹</button>
-      <div id="fb-dots" style="display:flex;align-items:center;gap:4px;"></div>
-      <button id="fb-next" onclick="fbChangePage(1)"
-        style="width:44px;height:44px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
-    </div>
-    <div style="text-align:center;font-size:11px;color:var(--text3);font-family:var(--font-ui);margin-top:8px;">← সোয়াইপ করুন অথবা বাটন চাপুন →</div>
+    <div style="height:40px;"></div>
   </div>
-
-  <div style="height:40px;"></div>
 </div>
 
 <!-- ENGAGEMENT MODAL -->
@@ -793,52 +771,25 @@
 
 
 <!-- FREE FLIPBOOK MODAL (e.g. "তোমার শক্তি তুমি") -->
-<div id="flipbook-modal-free" style="display:none; position:fixed; inset:0; background:#111; z-index:800; flex-direction:column; touch-action:none;">
+<div id="flipbook-modal-free" style="display:none; position:fixed; inset:0; background:#0a0a0a; z-index:800; flex-direction:column;">
   <!-- Header -->
-  <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(0,0,0,0.9); flex-shrink:0; border-bottom:1px solid rgba(255,255,255,0.08);">
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(0,0,0,0.95); flex-shrink:0; border-bottom:1px solid rgba(255,255,255,0.08);">
     <div style="display:flex; align-items:center; gap:10px;">
       <button onclick="fbFreeClose()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer;">✕</button>
       <div>
         <div style="font-size:13px; font-weight:600; color:#fff;" id="flipbook-free-title">বই</div>
-        <div style="font-size:11px; color:rgba(255,255,255,0.4);" id="flipbook-free-page-counter">পেজ ১/২১</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.4);">উপর-নিচে স্ক্রোল করে পড়ুন</div>
       </div>
     </div>
-    <div style="display:flex; gap:8px;">
-      <button onclick="fbFreeZoomOut()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:8px; font-size:16px; cursor:pointer;">−</button>
-      <button onclick="fbFreeZoomIn()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:8px; font-size:16px; cursor:pointer;">+</button>
-    </div>
+    <div style="font-size:11px; color:rgba(255,255,255,0.4);" id="flipbook-free-page-counter">মোট পেজ লোড হচ্ছে...</div>
   </div>
 
-  <!-- Page display area -->
-  <div id="fb-free-page-area" style="flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative; background:#1a1a2e;">
-    <!-- Page image with flip animation -->
-    <div id="fb-free-flip-container" style="position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
-      <img id="fb-free-img" src="" alt="" style="max-height:100%; max-width:100%; object-fit:contain; border-radius:4px; box-shadow:0 8px 40px rgba(0,0,0,0.6); transition:transform 0.3s ease, opacity 0.3s ease; transform-origin:center;">
+  <!-- Vertical Scroll Pages -->
+  <div id="fb-free-scroll-area" style="flex:1; overflow-y:auto; background:#0a0a0a; -webkit-overflow-scrolling:touch;">
+    <div id="fb-free-pages-container" style="max-width:600px; margin:0 auto; padding:12px; display:flex; flex-direction:column; gap:8px;">
+      <!-- Pages injected here by JS -->
     </div>
-
-    <!-- Left tap area -->
-    <div onclick="fbFreePrev()" style="position:absolute; left:0; top:0; width:40%; height:100%; cursor:pointer; display:flex; align-items:center; padding-left:8px; opacity:0;" id="fb-free-left-tap"
-         onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0'">
-      <div style="background:rgba(0,0,0,0.5); border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">‹</div>
-    </div>
-    <!-- Right tap area -->
-    <div onclick="fbFreeNext()" style="position:absolute; right:0; top:0; width:40%; height:100%; cursor:pointer; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; opacity:0;" id="fb-free-right-tap"
-         onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0'">
-      <div style="background:rgba(0,0,0,0.5); border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">›</div>
-    </div>
-  </div>
-
-  <!-- Bottom nav -->
-  <div style="padding:10px 16px 20px; background:rgba(0,0,0,0.9); display:flex; align-items:center; gap:12px; flex-shrink:0;">
-    <button onclick="fbFreePrev()" id="fb-free-prev-btn" style="background:rgba(255,255,255,0.1); border:none; color:#fff; border-radius:10px; padding:10px 18px; font-size:15px; cursor:pointer; font-family:inherit;">‹ আগে</button>
-    <!-- Progress bar -->
-    <div style="flex:1; position:relative;">
-      <div style="height:4px; background:rgba(255,255,255,0.15); border-radius:2px; overflow:hidden;">
-        <div id="fb-free-progress" style="height:100%; background:linear-gradient(90deg,#6366f1,#06b6d4); border-radius:2px; transition:width 0.3s ease; width:0%;"></div>
-      </div>
-      <div style="text-align:center; margin-top:6px; font-size:11px; color:rgba(255,255,255,0.4);" id="fb-free-page-num">১ / ২১</div>
-    </div>
-    <button onclick="fbFreeNext()" id="fb-free-next-btn" style="background:rgba(99,102,241,0.8); border:none; color:#fff; border-radius:10px; padding:10px 18px; font-size:15px; cursor:pointer; font-family:inherit;">পরে ›</button>
+    <div style="height:40px;"></div>
   </div>
 </div>
 
@@ -4304,80 +4255,45 @@ let fbFreeTouchStartX = 0;
 let fbFreeTitle = '';
 
 function openFlipbookFree(url, title) {
-  // Check if this is a local book (url starts with 'local:')
-  if (url === 'local:tomarshokti') {
-    fbFreeTitle = title;
-    fbFreeCurrentPage = 0;
-    fbFreeZoom = 1;
-    document.getElementById('flipbook-free-title').textContent = '📖 ' + title;
-    document.getElementById('fb-free-img').style.transform = 'scale(1)';
-    fbFreeShowPage(0);
-    const modal = document.getElementById('flipbook-modal-free');
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    fbFreeSetupTouch();
-    return;
-  }
-  // Fallback: browser
-  window.open(url, '_blank');
+  if (url !== 'local:tomarshokti') { window.open(url, '_blank'); return; }
+  const pages = BOOK_PAGES;
+  document.getElementById('flipbook-free-title').textContent = '📖 ' + title;
+  document.getElementById('flipbook-free-page-counter').textContent = 'মোট ' + pages.length + ' পেজ';
+  const container = document.getElementById('fb-free-pages-container');
+  container.innerHTML = '';
+  pages.forEach((src, i) => {
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'position:relative;border-radius:10px;overflow:hidden;background:#111;';
+    const pageNum = document.createElement('div');
+    pageNum.style.cssText = 'position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#aaa;font-size:10px;padding:2px 7px;border-radius:10px;font-family:sans-serif;z-index:2;';
+    pageNum.textContent = (i+1) + ' / ' + pages.length;
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = 'পেজ ' + (i+1);
+    img.draggable = false;
+    img.style.cssText = 'width:100%;display:block;-webkit-user-select:none;user-select:none;';
+    img.oncontextmenu = () => false;
+    wrapper.appendChild(pageNum);
+    wrapper.appendChild(img);
+    container.appendChild(wrapper);
+  });
+  const modal = document.getElementById('flipbook-modal-free');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  document.getElementById('fb-free-scroll-area').scrollTop = 0;
 }
 
-function fbFreeShowPage(n) {
-  const total = BOOK_PAGES.length;
-  fbFreeCurrentPage = Math.max(0, Math.min(n, total - 1));
-  const img = document.getElementById('fb-free-img');
-
-  // Flip animation
-  img.style.opacity = '0';
-  img.style.transform = `scale(${fbFreeZoom}) rotateY(15deg)`;
-  setTimeout(() => {
-    img.src = BOOK_PAGES[fbFreeCurrentPage];
-    img.style.transform = `scale(${fbFreeZoom}) rotateY(0deg)`;
-    img.style.opacity = '1';
-  }, 150);
-
-  // Update counter
-  const pct = ((fbFreeCurrentPage + 1) / total) * 100;
-  document.getElementById('fb-free-progress').style.width = pct + '%';
-  document.getElementById('fb-free-page-num').textContent = (fbFreeCurrentPage + 1) + ' / ' + total;
-  document.getElementById('flipbook-free-page-counter').textContent = 'পেজ ' + (fbFreeCurrentPage + 1) + '/' + total;
-
-  // Button states
-  document.getElementById('fb-free-prev-btn').style.opacity = fbFreeCurrentPage === 0 ? '0.3' : '1';
-  document.getElementById('fb-free-next-btn').style.opacity = fbFreeCurrentPage === total - 1 ? '0.3' : '1';
-}
-
-function fbFreeNext() {
-  if (fbFreeCurrentPage < BOOK_PAGES.length - 1) fbFreeShowPage(fbFreeCurrentPage + 1);
-}
-function fbFreePrev() {
-  if (fbFreeCurrentPage > 0) fbFreeShowPage(fbFreeCurrentPage - 1);
-}
-function fbFreeZoomIn() {
-  fbFreeZoom = Math.min(fbFreeZoom + 0.2, 3);
-  document.getElementById('fb-free-img').style.transform = `scale(${fbFreeZoom})`;
-}
-function fbFreeZoomOut() {
-  fbFreeZoom = Math.max(fbFreeZoom - 0.2, 0.5);
-  document.getElementById('fb-free-img').style.transform = `scale(${fbFreeZoom})`;
-}
 function fbFreeClose() {
   document.getElementById('flipbook-modal-free').style.display = 'none';
-  document.getElementById('fb-free-img').src = '';
   document.body.style.overflow = '';
 }
-function fbFreeSetupTouch() {
-  const area = document.getElementById('fb-free-page-area');
-  // Swipe disabled — use buttons only
-  // Keyboard support
-  document.onkeydown = (e) => {
-    const modal = document.getElementById('flipbook-modal-free');
-    if (modal.style.display === 'none') return;
-    if (e.key === 'ArrowRight') fbFreeNext();
-    if (e.key === 'ArrowLeft') fbFreePrev();
-    if (e.key === 'Escape') fbFreeClose();
-  };
-}
+
+function fbFreeNext() {}
+function fbFreePrev() {}
+function fbFreeZoomIn() {}
+function fbFreeZoomOut() {}
+function fbFreeShowPage(n) {}
+function fbFreeSetupTouch() {}
 
 // =====================
 // START
@@ -4448,11 +4364,7 @@ function initFlipbookPages() {
 }
 
 function openFlipbook(pages) {
-  document.getElementById('flipbook-modal').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  fbPreviewPage = 0;
   fbPages = pages && pages.length ? pages : MASTERCONTROL_PAGES;
-  // Set the modal title depending on which book was opened
   const titleEl = document.getElementById('fb-modal-title');
   if (titleEl) {
     if (typeof PURITY_PAGES !== 'undefined' && fbPages === PURITY_PAGES) {
@@ -4461,46 +4373,38 @@ function openFlipbook(pages) {
       titleEl.textContent = '📖 রিকভারি সংস্করণ';
     }
   }
-  fbRenderPage(0);
-  // Swipe disabled — use buttons only
+  const container = document.getElementById('fb-pages-container');
+  container.innerHTML = '';
+  fbPages.forEach((src, i) => {
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'position:relative;border-radius:10px;overflow:hidden;background:#111;';
+    const pageNum = document.createElement('div');
+    pageNum.style.cssText = 'position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#aaa;font-size:10px;padding:2px 7px;border-radius:10px;font-family:sans-serif;z-index:2;';
+    pageNum.textContent = (i+1) + ' / ' + fbPages.length;
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = 'পেজ ' + (i+1);
+    img.draggable = false;
+    img.style.cssText = 'width:100%;display:block;-webkit-user-select:none;user-select:none;';
+    img.oncontextmenu = () => false;
+    wrapper.appendChild(pageNum);
+    wrapper.appendChild(img);
+    container.appendChild(wrapper);
+  });
+  document.getElementById('fb-page-num').textContent = 'মোট ' + fbPages.length + ' পেজ';
+  const modal = document.getElementById('flipbook-modal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  document.getElementById('fb-scroll-area').scrollTop = 0;
 }
-
 
 function closeFlipbook() {
   document.getElementById('flipbook-modal').style.display = 'none';
   document.body.style.overflow = '';
 }
 
-function fbRenderPage(idx) {
-  if (!fbPages.length) return;
-  document.getElementById('fb-img').src = fbPages[idx];
-  document.getElementById('fb-page-num').textContent = `${idx+1} / ${fbPages.length}`;
-  document.getElementById('fb-prev').disabled = idx === 0;
-  document.getElementById('fb-next').disabled = idx === fbPages.length - 1;
-  // Dots
-  const dots = document.getElementById('fb-dots');
-  dots.innerHTML = Array.from({length: fbPages.length}, (_, i) =>
-    `<span style="display:inline-block;width:${i===idx?16:6}px;height:6px;border-radius:3px;
-      background:${i===idx?'var(--accent)':'var(--border)'};margin:0 2px;transition:all .3s;"></span>`
-  ).join('');
-}
-
-let fbTransitioning = false;
-function fbChangePage(dir) {
-  if (fbTransitioning) return;
-  const next = fbPreviewPage + dir;
-  if (next < 0 || next >= fbPages.length) return;
-  fbTransitioning = true;
-  const img = document.getElementById('fb-img');
-  img.style.transition = 'opacity 0.15s ease';
-  img.style.opacity = '0';
-  setTimeout(() => {
-    fbPreviewPage = next;
-    fbRenderPage(fbPreviewPage);
-    img.style.opacity = '1';
-    fbTransitioning = false;
-  }, 150);
-}
+function fbRenderPage(idx) {}
+function fbChangePage(dir) {}
 
 // PWA SERVICE WORKER — only on real hosting, not claude.ai preview
 if ('serviceWorker' in navigator && 
