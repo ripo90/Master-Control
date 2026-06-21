@@ -557,6 +557,23 @@
     font-weight:600; color:var(--accent); margin-bottom:20px;
   }
   .disclaimer-icon { font-size:64px; margin-bottom:16px; position:relative; z-index:1; }
+
+  /* Article reading styles */
+  .article-body { font-family:var(--font-ui); color:var(--text2); }
+  .article-body h1 { font-family:var(--font-serif); font-size:21px; font-weight:700; color:#fff; line-height:1.4; margin:0 0 6px; }
+  .article-body .article-subtitle { font-size:13px; color:var(--text3); margin-bottom:18px; line-height:1.5; }
+  .article-body h2 { font-family:var(--font-serif); font-size:17px; font-weight:700; color:var(--accent3); margin:26px 0 10px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.07); }
+  .article-body h2:first-of-type { border-top:none; padding-top:0; margin-top:18px; }
+  .article-body h3 { font-size:14.5px; font-weight:700; color:#e5e7eb; margin:18px 0 8px; }
+  .article-body p { font-size:14px; line-height:1.85; margin:0 0 14px; color:var(--text2); }
+  .article-body ul, .article-body ol { margin:0 0 16px; padding-right:0; padding-left:20px; }
+  .article-body li { font-size:13.5px; line-height:1.8; margin-bottom:8px; color:var(--text2); }
+  .article-body strong { color:#fff; font-weight:700; }
+  .article-body .article-tip { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:12px; padding:14px 16px; margin:16px 0; font-size:13px; line-height:1.7; color:var(--text2); }
+  .article-body .article-tip b { color:#86efac; }
+  .article-body .article-warn { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:12px; padding:14px 16px; margin:16px 0; font-size:13px; line-height:1.7; color:var(--text2); }
+  .article-body .article-warn b { color:#fca5a5; }
+  .article-body .app-pill { display:inline-block; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:2px 8px; font-size:12.5px; color:#fff; font-weight:600; }
   .disclaimer-title { font-size:28px; font-weight:800; position:relative; z-index:1; line-height:1.2; font-family:var(--font-serif); letter-spacing:-0.02em; }
   .disclaimer-subtitle { font-size:14px; color:var(--text2); margin-top:10px; line-height:1.7; position:relative; z-index:1; font-family:var(--font-serif); }
   .disc-point {
@@ -790,6 +807,22 @@
       <!-- Pages injected here by JS -->
     </div>
     <div style="height:40px;"></div>
+  </div>
+</div>
+
+<!-- ARTICLE READING MODAL -->
+<div id="article-modal" style="display:none; position:fixed; inset:0; background:var(--bg); z-index:800; flex-direction:column;">
+  <!-- Header -->
+  <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(14,21,32,0.97); backdrop-filter:blur(12px); flex-shrink:0; border-bottom:1px solid rgba(255,255,255,0.08);">
+    <button onclick="closeArticle()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer; flex-shrink:0;">✕</button>
+    <div style="font-size:14px; font-weight:600; color:#fff;" id="article-modal-title">আর্টিকেল</div>
+  </div>
+
+  <!-- Scrollable Article Body -->
+  <div style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; touch-action:pan-y;">
+    <div id="article-modal-body" class="article-body" style="max-width:640px; margin:0 auto; padding:20px 18px 50px;">
+      <!-- Article content injected here -->
+    </div>
   </div>
 </div>
 
@@ -1616,6 +1649,16 @@
       </div>
       <div style="padding:20px 18px 0;" id="muscle-diagram-area-2"></div>
       <div style="padding:0 18px 18px;" id="muscle-steps-area-2"></div>
+    </div>
+
+    <!-- Article: Device Blocking Guide -->
+    <div class="card" style="border-color:rgba(239,68,68,0.3); padding:16px 18px; margin-bottom:20px; cursor:pointer; display:flex; align-items:center; gap:14px;" onclick="openArticle('block-porn')">
+      <div style="width:48px; height:48px; flex-shrink:0; border-radius:12px; background:rgba(239,68,68,0.12); display:flex; align-items:center; justify-content:center; font-size:24px;">🛡️</div>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:14px; font-weight:700; color:#fff; margin-bottom:3px;">ফোন ও কম্পিউটার থেকে পর্ন ব্লক করার গাইড</div>
+        <div style="font-size:11.5px; color:var(--text3); line-height:1.5;">DNS, অ্যাপ ব্লকার ও অ্যাকাউন্টেবিলিটি — ধাপে ধাপে প্রসেস</div>
+      </div>
+      <div style="font-size:18px; color:var(--text3); flex-shrink:0;">›</div>
     </div>
 
     <!-- eBook Section -->
@@ -4287,6 +4330,92 @@ function openFlipbookFree(url, title) {
 
 function fbFreeClose() {
   document.getElementById('flipbook-modal-free').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ===== ARTICLES =====
+const ARTICLES = {
+  'block-porn': {
+    title: 'ডিভাইস ব্লকিং গাইড',
+    html: `
+      <h1>🛡️ ফোন ও কম্পিউটার থেকে পর্নোগ্রাফি ব্লক করার সম্পূর্ণ প্রসেস</h1>
+      <div class="article-subtitle">ধাপে ধাপে প্র্যাক্টিক্যাল গাইডলাইন — নিজের ডিভাইসকে একটি নিরাপদ দুর্গে পরিণত করুন</div>
+
+      <p>ইচ্ছাশক্তি একা যথেষ্ট নয়, যদি হাতের স্মার্টফোনে ২৪ ঘণ্টা অবাধ ইন্টারনেট খোলা থাকে। গবেষণা বলে, <strong>পরিবেশগত বাধা</strong> তৈরি করা মানসিক সংকল্পের চেয়ে অনেক বেশি কার্যকর — কারণ এটি impulse মুহূর্তে চিন্তা করার সময়টুকু কেড়ে নেয় না, বরং তার আগেই পথ বন্ধ করে দেয়। নিচের ধাপগুলো অনুসরণ করে আজই আপনার ডিভাইসগুলো নিরাপদ করুন।</p>
+
+      <h2>১. ফোনে DNS-ভিত্তিক ব্লকিং (সবচেয়ে সহজ ও কার্যকর)</h2>
+      <p>DNS ব্লকার ব্যবহার করলে ব্রাউজার বা অ্যাপ থেকে আলাদা করে কিছু ইনস্টল করতে হয় না — পুরো ডিভাইসের ইন্টারনেট ট্রাফিক ফিল্টার হয়ে যায়।</p>
+      <ul>
+        <li><strong>Android:</strong> Settings → Network & Internet → Private DNS → এখানে <span class="app-pill">dns.cleanbrowsing.org</span> বা <span class="app-pill">family.cloudflare-dns.com</span> বসিয়ে দিন।</li>
+        <li><strong>iPhone:</strong> Settings → Wi-Fi → নেটওয়ার্কের পাশের (i) আইকনে ট্যাপ করে Configure DNS → Manual করে উপরের যেকোনো একটি DNS যোগ করুন।</li>
+        <li><strong>কম্পিউটার (Windows/Mac):</strong> Network Settings থেকে DNS সার্ভার ম্যানুয়ালি একই ঠিকানায় পরিবর্তন করুন।</li>
+      </ul>
+      <div class="article-tip"><b>💡 টিপস:</b> CleanBrowsing বা Cloudflare Family DNS সম্পূর্ণ ফ্রি, এবং এটি অ্যাডাল্ট কন্টেন্ট স্বয়ংক্রিয়ভাবে ব্লক করে দেয় — কোনো অ্যাপ ইনস্টল করার দরকার নেই।</div>
+
+      <h2>২. ডেডিকেটেড ব্লকিং অ্যাপ ব্যবহার করুন</h2>
+      <p>শুধু DNS যথেষ্ট নয়, কারণ VPN দিয়ে এটি বাইপাস করা সম্ভব। তাই দ্বিতীয় স্তর হিসেবে একটি ব্লকিং অ্যাপ যোগ করুন যেখানে <strong>পাসওয়ার্ড অন্য কারো কাছে</strong> (বন্ধু, পরিবারের সদস্য) থাকে, যাতে নিজে নিজে সহজে বন্ধ করতে না পারেন।</p>
+      <ul>
+        <li><strong>Android:</strong> <span class="app-pill">Covenant Eyes</span>, <span class="app-pill">BlockerX</span>, বা <span class="app-pill">Bark</span></li>
+        <li><strong>iPhone:</strong> Screen Time-এর Content Restrictions + <span class="app-pill">Covenant Eyes</span></li>
+        <li><strong>কম্পিউটার:</strong> <span class="app-pill">Cold Turkey Blocker</span> বা <span class="app-pill">Freedom</span></li>
+      </ul>
+
+      <h2>৩. ফোনের বিল্ট-ইন প্যারেন্টাল/স্ক্রিন টাইম কন্ট্রোল চালু করুন</h2>
+      <p>প্রতিটি স্মার্টফোনেই ফ্রি বিল্ট-ইন টুল আছে যা দিয়ে কন্টেন্ট রেস্ট্রিকশন সেট করা যায়:</p>
+      <ul>
+        <li><strong>Android:</strong> Google Family Link অ্যাপ ইনস্টল করুন, নিজের ফোনকে "child device" হিসেবে অন্য একটি ট্রাস্টেড ফোনের (যেমন পরিবারের কারো) সাথে যুক্ত করুন — সেখান থেকেই Chrome SafeSearch ও অ্যাপ রেস্ট্রিকশন নিয়ন্ত্রণ হবে।</li>
+        <li><strong>iPhone:</strong> Settings → Screen Time → Content & Privacy Restrictions → Web Content → Limit Adult Websites। এরপর একটি Screen Time পাসকোড সেট করুন যা শুধু আপনার বিশ্বস্ত কেউ জানবে।</li>
+      </ul>
+
+      <h2>৪. ব্রাউজার-লেভেলে SafeSearch বাধ্যতামূলক করুন</h2>
+      <p>Google, Bing, YouTube — প্রতিটির নিজস্ব SafeSearch ফিচার আছে যা এক্সপ্লিসিট কন্টেন্ট ফিল্টার করে। DNS-এর মাধ্যমে এটি "লক" করে দেওয়া যায়, যাতে কেউ নিজে নিজে অফ করতে না পারে — এর জন্য <span class="app-pill">forcesafesearch.google.com</span> এর মতো DNS-লেভেল ফোর্সিং সার্চ করে দেখতে পারেন, অথবা ব্লকিং অ্যাপের মাধ্যমে এটি বাধ্যতামূলক করুন।</p>
+
+      <h2>৫. অ্যাকাউন্টেবিলিটি পার্টনার রাখুন</h2>
+      <p>প্রযুক্তিগত ব্লকিং কখনোই ১০০% নিশ্ছিদ্র নয় — সবচেয়ে শক্তিশালী সুরক্ষা আসে <strong>সামাজিক জবাবদিহিতা</strong> থেকে। একজন বিশ্বস্ত মানুষ (বন্ধু, বড় ভাই, মেন্টর) নির্বাচন করুন যিনি:</p>
+      <ul>
+        <li>আপনার ব্লকিং অ্যাপের পাসওয়ার্ড/পাসকোড নিজের কাছে রাখবেন</li>
+        <li>সাপ্তাহিক একটি ছোট চেক-ইন করবেন ("এই সপ্তাহ কেমন গেল?")</li>
+        <li>বিচার না করে শুনবেন, শুধু সাপোর্ট দেবেন</li>
+      </ul>
+      <div class="article-tip"><b>💡 কেন কাজ করে:</b> জানা থাকলে যে কেউ একজন জবাবদিহি চাইবে, মস্তিষ্ক impulse মুহূর্তে দ্বিতীয়বার ভাবতে বাধ্য হয় — এটি কগনিটিভ বিহেভিয়ারাল থেরাপির একটি প্রমাণিত কৌশল।</div>
+
+      <h2>৬. রাতের সময়সূচি নিয়ন্ত্রণ করুন</h2>
+      <p>বেশিরভাগ রিল্যাপস হয় গভীর রাতে, একা ঘরে, দরজা বন্ধ অবস্থায়। তাই:</p>
+      <ul>
+        <li>ফোন চার্জে দেওয়ার জায়গা বেডরুমের বাইরে করে ফেলুন</li>
+        <li>Android-এ Digital Wellbeing বা iPhone-এ Downtime ফিচার দিয়ে রাত ১১টা থেকে সকাল ৬টা পর্যন্ত ব্রাউজার ও সোশ্যাল মিডিয়া অ্যাপ অটো-ব্লক করে রাখুন</li>
+        <li>ফোনের বদলে ঘড়ির অ্যালার্ম ব্যবহার করুন, যাতে রাতে ফোন হাতে নেওয়ার কোনো অজুহাত না থাকে</li>
+      </ul>
+
+      <div class="article-warn"><b>⚠️ মনে রাখবেন:</b> কোনো ব্লকার ১০০% ফাঁকফোকরহীন নয় — এবং সেটাই স্বাভাবিক। লক্ষ্য নিখুঁত প্রতিরোধ ব্যবস্থা তৈরি করা নয়, বরং <strong>impulsive মুহূর্ত আর কাজের মাঝে যথেষ্ট ঘর্ষণ (friction)</strong> তৈরি করা, যাতে চিন্তা করার সময় পাওয়া যায় এবং সঠিক সিদ্ধান্ত নেওয়া সহজ হয়।</div>
+
+      <h2>৭. একসাথে একাধিক স্তর ব্যবহার করুন</h2>
+      <p>একটিমাত্র পদ্ধতির ওপর নির্ভর করবেন না। সবচেয়ে কার্যকর ফলাফল পেতে একসাথে কয়েকটি স্তর ব্যবহার করুন:</p>
+      <ul>
+        <li>✅ DNS ব্লকিং (Layer ১)</li>
+        <li>✅ ডেডিকেটেড ব্লকিং অ্যাপ, পাসওয়ার্ড অন্য কারো কাছে (Layer ২)</li>
+        <li>✅ বিল্ট-ইন স্ক্রিন টাইম/প্যারেন্টাল কন্ট্রোল (Layer ৩)</li>
+        <li>✅ অ্যাকাউন্টেবিলিটি পার্টনার (Layer ৪)</li>
+      </ul>
+      <p>এই চারটি স্তর একসাথে কাজ করলে যেকোনো একটি ফাঁকি দেওয়া কঠিন হয়ে যায়, এবং সময়ের সাথে সাথে নতুন সুস্থ অভ্যাস স্থায়ী হতে শুরু করে।</p>
+
+      <div class="article-tip"><b>মনে রাখবেন:</b> ডিভাইস ব্লকিং শুধু একটি বাহ্যিক সাহায্যকারী টুল — আসল পরিবর্তন আসে ভেতরের শক্তি, আধ্যাত্মিক সংযোগ আর সঠিক অভ্যাস থেকে। এই অ্যাপের কেগেল অনুশীলন, ট্র্যাকিং এবং "তোমার শক্তি তুমি" বইটি একসাথে ব্যবহার করুন সম্পূর্ণ রিকভারি জার্নির জন্য।</div>
+    `
+  }
+};
+
+function openArticle(key) {
+  const article = ARTICLES[key];
+  if (!article) return;
+  document.getElementById('article-modal-title').textContent = article.title;
+  document.getElementById('article-modal-body').innerHTML = article.html;
+  document.getElementById('article-modal').style.display = 'flex';
+  document.querySelector('#article-modal > div:last-child').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeArticle() {
+  document.getElementById('article-modal').style.display = 'none';
   document.body.style.overflow = '';
 }
 
