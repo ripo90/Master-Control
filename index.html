@@ -598,7 +598,7 @@
 <canvas id="confetti-canvas" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
 <!-- FLIPBOOK MODAL (simple viewer — both books fully unlocked with app purchase) -->
-<div id="flipbook-modal" style="display:none;position:fixed;inset:0;z-index:997;background:var(--bg);overflow-y:auto;">
+<div id="flipbook-modal" style="display:none;position:fixed;inset:0;z-index:997;background:var(--bg);overflow-y:auto;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">
 
   <!-- Header -->
   <div style="background:rgba(15,29,46,0.96);backdrop-filter:blur(12px);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;">
@@ -620,7 +620,7 @@
     <div style="position:relative;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);background:#000;cursor:pointer;"
       id="fb-flip-wrap">
       <div id="fb-flip-inner">
-        <img id="fb-img" src="" alt="বইয়ের পেজ" style="width:100%;display:block;">
+        <img id="fb-img" src="" alt="বইয়ের পেজ" draggable="false" oncontextmenu="return false;" style="width:100%;display:block;pointer-events:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">
       </div>
       <!-- Corner fold -->
       <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;background:linear-gradient(225deg,rgba(99,102,241,0.4) 40%,transparent 40%);pointer-events:none;border-radius:0 0 14px 0;"></div>
@@ -781,7 +781,7 @@
 
 <!-- UNLOCK SCREEN -->
 <div id="unlock-screen">
-  <div class="unlock-icon">🔐</div>
+  <img src="images/logo-0ab19f16.png" alt="Master Control" style="width:130px;height:auto;object-fit:contain;margin-bottom:18px;display:block;">
   <div class="unlock-title">অ্যাপ আনলক করুন</div>
   <div class="unlock-subtitle">আপনার পারচেজ কোড দিন — এতে পুরো অ্যাপ ও দুটি বই সম্পূর্ণ খুলে যাবে।</div>
   <input id="unlock-code-input" class="unlock-input" type="text" placeholder="MC-XXXX-XXXX" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
@@ -941,7 +941,7 @@
   <div class="topbar">
     <div>
       <div style="display:flex;align-items:center;gap:8px;">
-      <img src="images/logo-0ab19f16.png" alt="" style="width:36px;height:36px;object-fit:contain;flex-shrink:0;">
+      <img src="images/logo-0ab19f16.png" alt="" style="width:44px;height:44px;object-fit:contain;flex-shrink:0;">
       <div class="topbar-title" id="topbar-title">🏠 হোম</div>
     </div>
       <div class="topbar-subtitle" id="topbar-date"></div>
@@ -4466,13 +4466,16 @@ function openFlipbook(pages) {
     }
   }
   fbRenderPage(0);
-  // Swipe support
+  // Swipe support — attach only once (guard against duplicate listeners on repeated opens)
   const wrap = document.getElementById('fb-flip-wrap');
-  wrap.addEventListener('touchstart', e => { fbPreviewTouchX = e.touches[0].clientX; }, {passive:true});
-  wrap.addEventListener('touchend', e => {
-    const diff = fbPreviewTouchX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) fbChangePage(diff > 0 ? 1 : -1);
-  }, {passive:true});
+  if (!wrap.dataset.swipeBound) {
+    wrap.addEventListener('touchstart', e => { fbPreviewTouchX = e.touches[0].clientX; }, {passive:true});
+    wrap.addEventListener('touchend', e => {
+      const diff = fbPreviewTouchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) fbChangePage(diff > 0 ? 1 : -1);
+    }, {passive:true});
+    wrap.dataset.swipeBound = 'true';
+  }
 }
 
 
@@ -4495,9 +4498,12 @@ function fbRenderPage(idx) {
   ).join('');
 }
 
+let fbTransitioning = false;
 function fbChangePage(dir) {
+  if (fbTransitioning) return;
   const next = fbPreviewPage + dir;
   if (next < 0 || next >= fbPages.length) return;
+  fbTransitioning = true;
   const img = document.getElementById('fb-img');
   img.style.transition = 'opacity 0.15s ease';
   img.style.opacity = '0';
@@ -4505,6 +4511,7 @@ function fbChangePage(dir) {
     fbPreviewPage = next;
     fbRenderPage(fbPreviewPage);
     img.style.opacity = '1';
+    fbTransitioning = false;
   }, 150);
 }
 
