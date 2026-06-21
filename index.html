@@ -1621,14 +1621,16 @@
     <!-- eBook Section -->
     <div style="padding:0 16px 10px; font-size:13px; font-weight:600; color:var(--text2);">📗 বিনামূল্যে</div>
 
-    <!-- Book 1: সন্তানের অজানা জগৎ - FREE with real cover -->
+    <!-- Book 1: তোমার শক্তি তুমি - FREE with real cover -->
     <div style="margin:0 16px 16px; border-radius:var(--radius); background:var(--card); border:1px solid rgba(16,185,129,0.4); overflow:hidden;">
       <div style="display:flex; gap:0;">
-        <!-- Cover placeholder -->
-        <div style="width:110px; flex-shrink:0; background:linear-gradient(160deg,#052e16,#14532d); display:flex; align-items:center; justify-content:center; min-height:150px; position:relative;">
-          <div style="font-size:38px;">📘</div>
+        <!-- Real Cover -->
+        <div style="width:110px; flex-shrink:0; position:relative; min-height:150px; overflow:hidden;">
+          <img src="images/tomarshokti-01.jpg" alt="তোমার শক্তি তুমি"
+            style="width:100%; height:100%; object-fit:cover; display:block;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--card));"></div>
           <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(5,46,22,0.9)); padding:6px 8px;">
-            <span class="badge badge-green" style="font-size:10px;">⏳ শীঘ্রই</span>
+            <span class="badge badge-green" style="font-size:10px;">📗 ফ্রি</span>
           </div>
         </div>
         <!-- Info -->
@@ -1636,10 +1638,10 @@
           <div>
             <div style="font-size:15px; font-weight:700; color:#86efac; line-height:1.3; margin-bottom:6px;">তোমার শক্তি তুমি</div>
             <div style="font-size:11px; color:var(--text2); line-height:1.6; margin-bottom:10px;">হস্তমৈথুন ও পর্নোগ্রাফি থেকে মুক্তি ও আত্মনিয়ন্ত্রণ গাইড</div>
-            <div style="font-size:11px; color:var(--text3);">📄 Flipbook</div>
+            <div style="font-size:11px; color:var(--text3);">📄 ২০ পেজ · Flipbook</div>
           </div>
-          <button class="btn" style="margin-top:12px; padding:10px; font-size:13px; background:var(--surface); color:var(--text3); border:1px solid var(--border);" onclick="showToast('📘 এই বইটি শীঘ্রই যুক্ত হবে')">
-            শীঘ্রই আসছে
+          <button class="btn btn-green" style="margin-top:12px; padding:10px; font-size:13px;" onclick="openFlipbookFree('local:tomarshokti', 'তোমার শক্তি তুমি')">
+            📖 পড়া শুরু করুন
           </button>
         </div>
       </div>
