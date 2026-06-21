@@ -611,8 +611,8 @@
   </div>
 
   <!-- Vertical Scroll Pages -->
-  <div id="fb-scroll-area" style="flex:1;overflow-y:auto;background:#0a0a0a;-webkit-overflow-scrolling:touch;">
-    <div id="fb-pages-container" style="max-width:600px;margin:0 auto;padding:12px;display:flex;flex-direction:column;gap:8px;">
+  <div id="fb-scroll-area" style="flex:1;overflow-y:auto;overflow-x:hidden;background:#0a0a0a;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior-x:none;">
+    <div id="fb-pages-container" style="max-width:600px;margin:0 auto;padding:12px;display:flex;flex-direction:column;gap:8px;touch-action:pan-y;">
       <!-- Pages injected here by JS -->
     </div>
     <div style="height:40px;"></div>
@@ -785,8 +785,8 @@
   </div>
 
   <!-- Vertical Scroll Pages -->
-  <div id="fb-free-scroll-area" style="flex:1; overflow-y:auto; background:#0a0a0a; -webkit-overflow-scrolling:touch;">
-    <div id="fb-free-pages-container" style="max-width:600px; margin:0 auto; padding:12px; display:flex; flex-direction:column; gap:8px;">
+  <div id="fb-free-scroll-area" style="flex:1; overflow-y:auto; overflow-x:hidden; background:#0a0a0a; -webkit-overflow-scrolling:touch; touch-action:pan-y; overscroll-behavior-x:none;">
+    <div id="fb-free-pages-container" style="max-width:600px; margin:0 auto; padding:12px; display:flex; flex-direction:column; gap:8px; touch-action:pan-y;">
       <!-- Pages injected here by JS -->
     </div>
     <div style="height:40px;"></div>
@@ -4271,7 +4271,7 @@ function openFlipbookFree(url, title) {
     img.src = src;
     img.alt = 'পেজ ' + (i+1);
     img.draggable = false;
-    img.style.cssText = 'width:100%;display:block;-webkit-user-select:none;user-select:none;';
+    img.style.cssText = 'width:100%;display:block;-webkit-user-select:none;user-select:none;touch-action:pan-y;pointer-events:auto;';
     img.oncontextmenu = () => false;
     wrapper.appendChild(pageNum);
     wrapper.appendChild(img);
@@ -4385,7 +4385,7 @@ function openFlipbook(pages) {
     img.src = src;
     img.alt = 'পেজ ' + (i+1);
     img.draggable = false;
-    img.style.cssText = 'width:100%;display:block;-webkit-user-select:none;user-select:none;';
+    img.style.cssText = 'width:100%;display:block;-webkit-user-select:none;user-select:none;touch-action:pan-y;pointer-events:auto;';
     img.oncontextmenu = () => false;
     wrapper.appendChild(pageNum);
     wrapper.appendChild(img);
