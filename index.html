@@ -617,7 +617,7 @@
     </div>
 
     <!-- Book Page -->
-    <div style="position:relative;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);background:#000;cursor:pointer;"
+    <div style="position:relative;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);background:#000;cursor:pointer;max-width:480px;margin:0 auto;"
       id="fb-flip-wrap">
       <div id="fb-flip-inner">
         <img id="fb-img" src="" alt="বইয়ের পেজ" draggable="false" oncontextmenu="return false;" style="width:100%;display:block;pointer-events:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">
@@ -4368,11 +4368,7 @@ function fbFreeClose() {
 }
 function fbFreeSetupTouch() {
   const area = document.getElementById('fb-free-page-area');
-  area.ontouchstart = (e) => { fbFreeTouchStartX = e.touches[0].clientX; };
-  area.ontouchend = (e) => {
-    const dx = e.changedTouches[0].clientX - fbFreeTouchStartX;
-    if (Math.abs(dx) > 50) { dx < 0 ? fbFreeNext() : fbFreePrev(); }
-  };
+  // Swipe disabled — use buttons only
   // Keyboard support
   document.onkeydown = (e) => {
     const modal = document.getElementById('flipbook-modal-free');
@@ -4466,16 +4462,7 @@ function openFlipbook(pages) {
     }
   }
   fbRenderPage(0);
-  // Swipe support — attach only once (guard against duplicate listeners on repeated opens)
-  const wrap = document.getElementById('fb-flip-wrap');
-  if (!wrap.dataset.swipeBound) {
-    wrap.addEventListener('touchstart', e => { fbPreviewTouchX = e.touches[0].clientX; }, {passive:true});
-    wrap.addEventListener('touchend', e => {
-      const diff = fbPreviewTouchX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) fbChangePage(diff > 0 ? 1 : -1);
-    }, {passive:true});
-    wrap.dataset.swipeBound = 'true';
-  }
+  // Swipe disabled — use buttons only
 }
 
 
