@@ -406,27 +406,6 @@
   .onboard-title { font-size:28px; font-weight:700; text-align:center; margin-bottom:10px; }
   .onboard-subtitle { font-size:15px; color:var(--text2); text-align:center; line-height:1.6; margin-bottom:40px; }
 
-  /* UNLOCK SCREEN */
-  #unlock-screen {
-    position:fixed; inset:0; background:var(--bg); z-index:1001;
-    display:flex; flex-direction:column; padding:32px 24px;
-    align-items:center; justify-content:center; text-align:center;
-  }
-  .unlock-icon { font-size:56px; margin-bottom:18px; }
-  .unlock-title { font-size:24px; font-weight:800; margin-bottom:8px; font-family:var(--font-serif); }
-  .unlock-subtitle { font-size:14px; color:var(--text2); line-height:1.7; margin-bottom:32px; max-width:340px; }
-  .unlock-input {
-    width:100%; max-width:340px; padding:16px 18px; border-radius:14px;
-    border:1.5px solid var(--border); background:var(--card); color:var(--text);
-    font-family:var(--font-serif); font-size:16px; text-align:center;
-    letter-spacing:0.05em; outline:none; margin-bottom:14px;
-  }
-  .unlock-input:focus { border-color:var(--accent); }
-  .unlock-error {
-    font-size:13px; color:var(--red); margin-bottom:14px; min-height:18px;
-    font-family:var(--font-ui);
-  }
-
   /* ANIMATIONS */
   @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
   @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
@@ -557,23 +536,6 @@
     font-weight:600; color:var(--accent); margin-bottom:20px;
   }
   .disclaimer-icon { font-size:64px; margin-bottom:16px; position:relative; z-index:1; }
-
-  /* Article reading styles */
-  .article-body { font-family:var(--font-ui); color:var(--text2); }
-  .article-body h1 { font-family:var(--font-serif); font-size:21px; font-weight:700; color:#fff; line-height:1.4; margin:0 0 6px; }
-  .article-body .article-subtitle { font-size:13px; color:var(--text3); margin-bottom:18px; line-height:1.5; }
-  .article-body h2 { font-family:var(--font-serif); font-size:17px; font-weight:700; color:var(--accent3); margin:26px 0 10px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.07); }
-  .article-body h2:first-of-type { border-top:none; padding-top:0; margin-top:18px; }
-  .article-body h3 { font-size:14.5px; font-weight:700; color:#e5e7eb; margin:18px 0 8px; }
-  .article-body p { font-size:14px; line-height:1.85; margin:0 0 14px; color:var(--text2); }
-  .article-body ul, .article-body ol { margin:0 0 16px; padding-right:0; padding-left:20px; }
-  .article-body li { font-size:13.5px; line-height:1.8; margin-bottom:8px; color:var(--text2); }
-  .article-body strong { color:#fff; font-weight:700; }
-  .article-body .article-tip { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:12px; padding:14px 16px; margin:16px 0; font-size:13px; line-height:1.7; color:var(--text2); }
-  .article-body .article-tip b { color:#86efac; }
-  .article-body .article-warn { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:12px; padding:14px 16px; margin:16px 0; font-size:13px; line-height:1.7; color:var(--text2); }
-  .article-body .article-warn b { color:#fca5a5; }
-  .article-body .app-pill { display:inline-block; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:2px 8px; font-size:12.5px; color:#fff; font-weight:600; }
   .disclaimer-title { font-size:28px; font-weight:800; position:relative; z-index:1; line-height:1.2; font-family:var(--font-serif); letter-spacing:-0.02em; }
   .disclaimer-subtitle { font-size:14px; color:var(--text2); margin-top:10px; line-height:1.7; position:relative; z-index:1; font-family:var(--font-serif); }
   .disc-point {
@@ -614,26 +576,144 @@
 <!-- CONFETTI CANVAS -->
 <canvas id="confetti-canvas" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
-<!-- FLIPBOOK MODAL (simple viewer — both books fully unlocked with app purchase) -->
-<div id="flipbook-modal" style="display:none;position:fixed;inset:0;z-index:997;background:#0a0a0a;flex-direction:column;">
+<!-- FLIPBOOK MODAL -->
+<div id="flipbook-modal" style="display:none;position:fixed;inset:0;z-index:997;background:var(--bg);overflow-y:auto;">
 
   <!-- Header -->
-  <div style="background:rgba(15,29,46,0.98);backdrop-filter:blur(12px);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);flex-shrink:0;">
+  <div style="background:rgba(15,29,46,0.96);backdrop-filter:blur(12px);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;">
     <button onclick="closeFlipbook()" style="width:36px;height:36px;border-radius:10px;background:var(--surface);border:none;color:var(--text2);font-size:20px;cursor:pointer;">←</button>
-    <div style="flex:1;">
-      <div style="font-size:16px;font-weight:700;" id="fb-modal-title">📖 বই</div>
-      <div style="font-size:11px;color:var(--text3);font-family:var(--font-ui);">উপর-নিচে স্ক্রোল করে পড়ুন</div>
+    <div>
+      <div style="font-size:16px;font-weight:700;">📖 রিকভারি সংস্করণ</div>
+      <div style="font-size:11px;color:var(--text3);font-family:var(--font-ui);">মাস্টার কন্ট্রোল • ১৪৫ পেজ</div>
     </div>
-    <div style="background:rgba(99,102,241,0.15);color:var(--accent);padding:3px 10px;border-radius:20px;font-size:11px;font-family:var(--font-ui);" id="fb-page-num">লোড হচ্ছে...</div>
   </div>
 
-  <!-- Vertical Scroll Pages -->
-  <div id="fb-scroll-area" style="flex:1;overflow-y:auto;overflow-x:hidden;background:#0a0a0a;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior-x:none;">
-    <div id="fb-pages-container" style="max-width:600px;margin:0 auto;padding:12px;display:flex;flex-direction:column;gap:8px;touch-action:pan-y;">
-      <!-- Pages injected here by JS -->
+  <!-- Book Info Hero -->
+  <div style="margin:16px;padding:20px;border-radius:18px;position:relative;overflow:hidden;border:1px solid rgba(99,102,241,0.25);">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(99,102,241,0.14),rgba(139,92,246,0.08));"></div>
+    <div style="position:relative;">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--gold);font-family:var(--font-ui);margin-bottom:10px;">📚 প্রিমিয়াম বই</div>
+      <div style="font-size:20px;font-weight:800;line-height:1.25;margin-bottom:6px;">মাস্টার কন্ট্রোল<br><span style="color:var(--gold);">রিকভারি সংস্করণ</span></div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">নারী-পুরুষ উভয়ের আত্মনিয়ন্ত্রণ, যৌন স্বাস্থ্য ও আত্মবিশ্বাস অর্জনের বিজ্ঞানসম্মত পূর্ণাঙ্গ গাইডলাইন।</div>
+      <div style="display:flex;gap:16px;">
+        <span style="font-size:12px;color:var(--text3);font-family:var(--font-ui);"><strong style="color:var(--text2);">১৪৫</strong> পেজ</span>
+        <span style="font-size:12px;color:var(--text3);font-family:var(--font-ui);"><strong style="color:var(--gold);">২৯৯ টাকা</strong></span>
+        <span style="font-size:12px;color:var(--text3);font-family:var(--font-ui);">বাংলা ভাষা</span>
+      </div>
     </div>
-    <div style="height:40px;"></div>
   </div>
+
+  <!-- Flipbook Preview -->
+  <div style="padding:0 16px 20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="font-size:13px;color:var(--text3);font-family:var(--font-ui);">🔓 বিনামূল্যে প্রিভিউ (৫ পেজ)</div>
+      <div style="background:rgba(99,102,241,0.15);color:var(--accent);padding:3px 10px;border-radius:20px;font-size:11px;font-family:var(--font-ui);" id="fb-page-num">১ / ৫</div>
+    </div>
+
+    <!-- Book Page -->
+    <div style="position:relative;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);background:#000;cursor:pointer;"
+      id="fb-flip-wrap">
+      <div id="fb-flip-inner" style="transform-style:preserve-3d;transition:transform 0.5s ease;">
+        <img id="fb-img" src="" alt="বইয়ের পেজ" style="width:100%;display:block;">
+      </div>
+      <!-- Corner fold -->
+      <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;background:linear-gradient(225deg,rgba(99,102,241,0.4) 40%,transparent 40%);pointer-events:none;border-radius:0 0 14px 0;"></div>
+    </div>
+
+    <!-- Controls -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px;">
+      <button id="fb-prev" onclick="fbChangePage(-1)"
+        style="width:44px;height:44px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;"
+        disabled>‹</button>
+      <div id="fb-dots" style="display:flex;align-items:center;gap:4px;"></div>
+      <button id="fb-next" onclick="fbChangePage(1)"
+        style="width:44px;height:44px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
+    </div>
+    <div style="text-align:center;font-size:11px;color:var(--text3);font-family:var(--font-ui);margin-top:8px;">← সোয়াইপ করুন অথবা বাটন চাপুন →</div>
+  </div>
+
+  <!-- Locked Blur Preview -->
+  <div id="fb-lock-preview" style="margin:0 16px 16px;border-radius:14px;overflow:hidden;position:relative;">
+    <img id="fb-blur-img" src="" style="width:100%;display:block;filter:blur(8px) brightness(0.35);">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+      <div style="font-size:44px;">🔒</div>
+      <div style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:20px;padding:6px 16px;font-size:12px;color:var(--gold);font-family:var(--font-ui);">১৪০+ পেজ লক করা আছে</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);text-align:center;padding:0 30px;">সম্পূর্ণ বই পড়তে নিচে পেমেন্ট করুন</div>
+    </div>
+  </div>
+
+  <!-- Payment Section -->
+  <div id="fb-payment-section" style="margin:0 16px 16px;border-radius:18px;overflow:hidden;border:1px solid rgba(245,158,11,0.3);">
+    <div style="padding:14px 18px 12px;background:rgba(245,158,11,0.06);border-bottom:1px solid rgba(245,158,11,0.15);display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:12px;font-weight:600;color:var(--gold);font-family:var(--font-ui);text-transform:uppercase;letter-spacing:0.07em;">🔒 প্রিমিয়াম কন্টেন্ট</div>
+      <div style="font-size:11px;color:var(--gold);font-family:var(--font-ui);">একবার কিনুন, সারাজীবন</div>
+    </div>
+    <div style="padding:20px 18px;">
+
+      <!-- bKash number -->
+      <div style="background:rgba(236,72,153,0.1);border:1.5px solid rgba(236,72,153,0.3);border-radius:12px;padding:16px;text-align:center;margin-bottom:16px;">
+        <div style="font-size:11px;color:#ec4899;font-family:var(--font-ui);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">💳 bKash পেমেন্ট নম্বর</div>
+        <div style="font-size:24px;font-weight:800;color:#ec4899;letter-spacing:0.04em;">01723037327</div>
+        <div style="font-size:13px;color:var(--text3);font-family:var(--font-ui);margin-top:4px;">পরিমাণ: ২৯৯ টাকা (Send Money)</div>
+      </div>
+
+      <!-- Steps -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface);border-radius:12px;border:1px solid var(--border);">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-ui);">১</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6;">bKash অ্যাপ → <strong style="color:var(--text);">Send Money</strong> → <strong style="color:#ec4899;">01723037327</strong></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface);border-radius:12px;border:1px solid var(--border);">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-ui);">২</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6;">পরিমাণ: <strong style="color:var(--gold);">২৯৯ টাকা</strong> • Reference: <strong style="color:var(--text);">MCR</strong></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface);border-radius:12px;border:1px solid var(--border);">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-ui);">৩</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6;">পেমেন্টের <strong style="color:var(--text);">স্ক্রিনশট</strong> নিচের WhatsApp বাটনে পাঠান</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface);border-radius:12px;border:1px solid var(--border);">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-ui);">৪</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6;"><strong style="color:var(--green);">Unlock Code</strong> পাবেন — নিচে দিলেই পুরো বই খুলবে</div>
+        </div>
+      </div>
+
+      <!-- WhatsApp Button -->
+      <button onclick="fbSendWhatsApp()"
+        style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border-radius:12px;background:#25d366;color:#fff;font-family:var(--font-serif);font-size:15px;font-weight:600;border:none;cursor:pointer;width:100%;margin-bottom:14px;">
+        <span style="font-size:22px;">💬</span> WhatsApp-এ স্ক্রিনশট পাঠান
+      </button>
+
+      <!-- Unlock Code -->
+      <div style="background:var(--surface);border-radius:14px;padding:16px;border:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;">🔑 Unlock Code দিন</div>
+        <input id="fb-unlock-input" type="text"
+          placeholder="আপনার unlock code এখানে..."
+          style="width:100%;padding:13px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-family:var(--font-serif);font-size:14px;outline:none;margin-bottom:10px;"
+          autocomplete="off" autocorrect="off" spellcheck="false">
+        <button onclick="fbTryUnlock()"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:12px;background:linear-gradient(135deg,#5558e8,#7c3aed);color:#fff;font-family:var(--font-serif);font-size:15px;font-weight:600;border:none;cursor:pointer;width:100%;box-shadow:0 4px 20px rgba(99,102,241,0.35);">
+          🔓 বই Unlock করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Screen (hidden) -->
+  <div id="fb-success" style="display:none;text-align:center;padding:40px 24px;">
+    <div style="font-size:64px;margin-bottom:16px;">🎉</div>
+    <div style="font-size:22px;font-weight:800;margin-bottom:8px;color:var(--green);">Unlocked!</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:24px;">মাস্টার কন্ট্রোল রিকভারি সংস্করণ সম্পূর্ণ আনলক হয়েছে!</div>
+    <button onclick="fbDownload()"
+      style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:12px;background:linear-gradient(135deg,#b45309,#d97706);color:#fff;font-family:var(--font-serif);font-size:15px;font-weight:600;border:none;cursor:pointer;width:100%;margin-bottom:12px;box-shadow:0 4px 16px rgba(245,158,11,0.3);">
+      📥 সম্পূর্ণ বই ডাউনলোড করুন
+    </button>
+    <button onclick="closeFlipbook()"
+      style="display:flex;align-items:center;justify-content:center;padding:14px;border-radius:12px;background:var(--surface);color:var(--text2);font-family:var(--font-serif);font-size:14px;border:1px solid var(--border);cursor:pointer;width:100%;">
+      ← অ্যাপে ফিরে যান
+    </button>
+  </div>
+
+  <div style="height:40px;"></div>
 </div>
 
 <!-- ENGAGEMENT MODAL -->
@@ -691,7 +771,7 @@
   <div class="disclaimer-hero">
     <div style="position:relative; z-index:1;">
       <div class="disclaimer-badge">🌿 প্রাকৃতিক ও বিজ্ঞানসম্মত পদ্ধতি</div>
-      <div class="disclaimer-icon"><img src="images/logo-0ab19f16.png" alt="Master Control" style="width:170px;height:auto;object-fit:contain;"></div>
+      <div class="disclaimer-icon"><img src="images/logo-0ab19f16.png" alt="Master Control" style="width:120px;height:auto;object-fit:contain;"></div>
       <div class="disclaimer-title">মাস্টার কন্ট্রোল</div>
       <div class="disclaimer-subtitle">শুরু করার আগে কিছু গুরুত্বপূর্ণ কথা</div>
     </div>
@@ -757,7 +837,7 @@
 
 <!-- ONBOARDING -->
 <div id="onboarding">
-  <img src="images/logo-0ab19f16.png" alt="Master Control" style="width:180px;height:auto;object-fit:contain;margin-bottom:16px;display:block;">
+  <img src="images/logo-0ab19f16.png" alt="Master Control" style="width:130px;height:auto;object-fit:contain;margin-bottom:16px;display:block;">
   <div class="onboard-title">মাস্টার কন্ট্রোল</div>
   <div class="onboard-subtitle">পেলভিক হেলথ, রিকভারি ও মানসিক শক্তির জন্য আপনার ব্যক্তিগত সঙ্গী</div>
   <div style="width:100%; margin-bottom:16px;">
@@ -774,55 +854,55 @@
   <button class="btn btn-primary" onclick="finishOnboarding()">শুরু করি →</button>
 </div>
 
-<!-- UNLOCK SCREEN -->
-<div id="unlock-screen">
-  <img src="images/logo-0ab19f16.png" alt="Master Control" style="width:180px;height:auto;object-fit:contain;margin-bottom:18px;display:block;">
-  <div class="unlock-title">অ্যাপ আনলক করুন</div>
-  <div class="unlock-subtitle">আপনার পারচেজ কোড দিন — এতে পুরো অ্যাপ ও দুটি বই সম্পূর্ণ খুলে যাবে।</div>
-  <input id="unlock-code-input" class="unlock-input" type="text" placeholder="MC-XXXX-XXXX" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
-  <div class="unlock-error" id="unlock-error-msg"></div>
-  <button class="btn btn-primary" style="max-width:340px;" onclick="tryUnlockApp()">🔓 আনলক করুন</button>
-  <div style="margin-top:24px; font-size:12px; color:var(--text3); max-width:300px; line-height:1.6;">কোড না থাকলে আমাদের ফেসবুক পেজে যোগাযোগ করে কিনে নিন।</div>
-</div>
-
 
 
 <!-- FREE FLIPBOOK MODAL (e.g. "তোমার শক্তি তুমি") -->
-<div id="flipbook-modal-free" style="display:none; position:fixed; inset:0; background:#0a0a0a; z-index:800; flex-direction:column;">
+<div id="flipbook-modal-free" style="display:none; position:fixed; inset:0; background:#111; z-index:800; flex-direction:column; touch-action:none;">
   <!-- Header -->
-  <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(0,0,0,0.95); flex-shrink:0; border-bottom:1px solid rgba(255,255,255,0.08);">
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(0,0,0,0.9); flex-shrink:0; border-bottom:1px solid rgba(255,255,255,0.08);">
     <div style="display:flex; align-items:center; gap:10px;">
       <button onclick="fbFreeClose()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer;">✕</button>
       <div>
         <div style="font-size:13px; font-weight:600; color:#fff;" id="flipbook-free-title">বই</div>
-        <div style="font-size:11px; color:rgba(255,255,255,0.4);">উপর-নিচে স্ক্রোল করে পড়ুন</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.4);" id="flipbook-free-page-counter">পেজ ১/২১</div>
       </div>
     </div>
-    <div style="font-size:11px; color:rgba(255,255,255,0.4);" id="flipbook-free-page-counter">মোট পেজ লোড হচ্ছে...</div>
-  </div>
-
-  <!-- Vertical Scroll Pages -->
-  <div id="fb-free-scroll-area" style="flex:1; overflow-y:auto; overflow-x:hidden; background:#0a0a0a; -webkit-overflow-scrolling:touch; touch-action:pan-y; overscroll-behavior-x:none;">
-    <div id="fb-free-pages-container" style="max-width:600px; margin:0 auto; padding:12px; display:flex; flex-direction:column; gap:8px; touch-action:pan-y;">
-      <!-- Pages injected here by JS -->
+    <div style="display:flex; gap:8px;">
+      <button onclick="fbFreeZoomOut()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:8px; font-size:16px; cursor:pointer;">−</button>
+      <button onclick="fbFreeZoomIn()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:8px; font-size:16px; cursor:pointer;">+</button>
     </div>
-    <div style="height:40px;"></div>
-  </div>
-</div>
-
-<!-- ARTICLE READING MODAL -->
-<div id="article-modal" style="display:none; position:fixed; inset:0; background:var(--bg); z-index:800; flex-direction:column;">
-  <!-- Header -->
-  <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(14,21,32,0.97); backdrop-filter:blur(12px); flex-shrink:0; border-bottom:1px solid rgba(255,255,255,0.08);">
-    <button onclick="closeArticle()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer; flex-shrink:0;">✕</button>
-    <div style="font-size:14px; font-weight:600; color:#fff;" id="article-modal-title">আর্টিকেল</div>
   </div>
 
-  <!-- Scrollable Article Body -->
-  <div style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; touch-action:pan-y;">
-    <div id="article-modal-body" class="article-body" style="max-width:640px; margin:0 auto; padding:20px 18px 50px;">
-      <!-- Article content injected here -->
+  <!-- Page display area -->
+  <div id="fb-free-page-area" style="flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative; background:#1a1a2e;">
+    <!-- Page image with flip animation -->
+    <div id="fb-free-flip-container" style="position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+      <img id="fb-free-img" src="" alt="" style="max-height:100%; max-width:100%; object-fit:contain; border-radius:4px; box-shadow:0 8px 40px rgba(0,0,0,0.6); transition:transform 0.3s ease, opacity 0.3s ease; transform-origin:center;">
     </div>
+
+    <!-- Left tap area -->
+    <div onclick="fbFreePrev()" style="position:absolute; left:0; top:0; width:40%; height:100%; cursor:pointer; display:flex; align-items:center; padding-left:8px; opacity:0;" id="fb-free-left-tap"
+         onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0'">
+      <div style="background:rgba(0,0,0,0.5); border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">‹</div>
+    </div>
+    <!-- Right tap area -->
+    <div onclick="fbFreeNext()" style="position:absolute; right:0; top:0; width:40%; height:100%; cursor:pointer; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; opacity:0;" id="fb-free-right-tap"
+         onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0'">
+      <div style="background:rgba(0,0,0,0.5); border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">›</div>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div style="padding:10px 16px 20px; background:rgba(0,0,0,0.9); display:flex; align-items:center; gap:12px; flex-shrink:0;">
+    <button onclick="fbFreePrev()" id="fb-free-prev-btn" style="background:rgba(255,255,255,0.1); border:none; color:#fff; border-radius:10px; padding:10px 18px; font-size:15px; cursor:pointer; font-family:inherit;">‹ আগে</button>
+    <!-- Progress bar -->
+    <div style="flex:1; position:relative;">
+      <div style="height:4px; background:rgba(255,255,255,0.15); border-radius:2px; overflow:hidden;">
+        <div id="fb-free-progress" style="height:100%; background:linear-gradient(90deg,#6366f1,#06b6d4); border-radius:2px; transition:width 0.3s ease; width:0%;"></div>
+      </div>
+      <div style="text-align:center; margin-top:6px; font-size:11px; color:rgba(255,255,255,0.4);" id="fb-free-page-num">১ / ২১</div>
+    </div>
+    <button onclick="fbFreeNext()" id="fb-free-next-btn" style="background:rgba(99,102,241,0.8); border:none; color:#fff; border-radius:10px; padding:10px 18px; font-size:15px; cursor:pointer; font-family:inherit;">পরে ›</button>
   </div>
 </div>
 
@@ -925,7 +1005,7 @@
   <div class="topbar">
     <div>
       <div style="display:flex;align-items:center;gap:8px;">
-      <img src="images/logo-0ab19f16.png" alt="" style="width:66px;height:66px;object-fit:contain;flex-shrink:0;">
+      <img src="images/logo-0ab19f16.png" alt="" style="width:26px;height:26px;object-fit:contain;flex-shrink:0;">
       <div class="topbar-title" id="topbar-title">🏠 হোম</div>
     </div>
       <div class="topbar-subtitle" id="topbar-date"></div>
@@ -1651,29 +1731,20 @@
       <div style="padding:0 18px 18px;" id="muscle-steps-area-2"></div>
     </div>
 
-    <!-- Article: Device Blocking Guide -->
-    <div class="card" style="border-color:rgba(239,68,68,0.3); padding:16px 18px; margin-bottom:20px; cursor:pointer; display:flex; align-items:center; gap:14px;" onclick="openArticle('block-porn')">
-      <div style="width:48px; height:48px; flex-shrink:0; border-radius:12px; background:rgba(239,68,68,0.12); display:flex; align-items:center; justify-content:center; font-size:24px;">🛡️</div>
-      <div style="flex:1; min-width:0;">
-        <div style="font-size:14px; font-weight:700; color:#fff; margin-bottom:3px;">ফোন ও কম্পিউটার থেকে পর্ন ব্লক করার গাইড</div>
-        <div style="font-size:11.5px; color:var(--text3); line-height:1.5;">DNS, অ্যাপ ব্লকার ও অ্যাকাউন্টেবিলিটি — ধাপে ধাপে প্রসেস</div>
-      </div>
-      <div style="font-size:18px; color:var(--text3); flex-shrink:0;">›</div>
-    </div>
-
     <!-- eBook Section -->
     <div style="padding:0 16px 10px; font-size:13px; font-weight:600; color:var(--text2);">📗 বিনামূল্যে</div>
 
-    <!-- Book 1: তোমার শক্তি তুমি - FREE with real cover -->
+    <!-- Book 1: সন্তানের অজানা জগৎ - FREE with real cover -->
     <div style="margin:0 16px 16px; border-radius:var(--radius); background:var(--card); border:1px solid rgba(16,185,129,0.4); overflow:hidden;">
       <div style="display:flex; gap:0;">
-        <!-- Real Cover -->
-        <div style="width:110px; flex-shrink:0; position:relative; min-height:150px; overflow:hidden;">
-          <img src="images/tomarshokti-01.jpg" alt="তোমার শক্তি তুমি"
-            style="width:100%; height:100%; object-fit:cover; display:block;">
-          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--card));"></div>
+        <!-- Cover Image -->
+        <div style="width:110px; flex-shrink:0; position:relative; background:#052e16; min-height:150px;">
+          <img src="images/logo-6477d386.jpg"
+               alt="সন্তানের অজানা জগৎ"
+               style="width:100%; height:100%; object-fit:cover; display:block; min-height:150px;"
+               onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:150px;font-size:40px;\'>📖</div>'">
           <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(5,46,22,0.9)); padding:6px 8px;">
-            <span class="badge badge-green" style="font-size:10px;">📗 ফ্রি</span>
+            <span class="badge badge-green" style="font-size:10px;">✅ ফ্রি</span>
           </div>
         </div>
         <!-- Info -->
@@ -1681,44 +1752,44 @@
           <div>
             <div style="font-size:15px; font-weight:700; color:#86efac; line-height:1.3; margin-bottom:6px;">তোমার শক্তি তুমি</div>
             <div style="font-size:11px; color:var(--text2); line-height:1.6; margin-bottom:10px;">হস্তমৈথুন ও পর্নোগ্রাফি থেকে মুক্তি ও আত্মনিয়ন্ত্রণ গাইড</div>
-            <div style="font-size:11px; color:var(--text3);">📄 ২০ পেজ · Flipbook</div>
+            <div style="font-size:11px; color:var(--text3);">📄 Flipbook • বিনামূল্যে পড়ুন</div>
           </div>
           <button class="btn btn-green" style="margin-top:12px; padding:10px; font-size:13px;" onclick="openFlipbookFree('local:tomarshokti', 'তোমার শক্তি তুমি')">
-            📖 পড়া শুরু করুন
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div style="padding:0 16px 10px; font-size:13px; font-weight:600; color:var(--text2);">📘 আপনার সংগ্রহ</div>
-
-    <!-- Book 2: পবিত্রতার পথে - UNLOCKED (part of app purchase) -->
-    <div style="margin:0 16px 14px; border-radius:var(--radius); background:var(--card); border:1px solid rgba(99,102,241,0.4); overflow:hidden;">
-      <div style="display:flex; gap:0;">
-        <!-- Real Cover -->
-        <div style="width:110px; flex-shrink:0; position:relative; min-height:150px; overflow:hidden;" id="purity-cover">
-          <img id="purity-cover-img" src="" alt="পবিত্রতার পথে"
-            style="width:100%; height:100%; object-fit:cover; display:block;">
-          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--card));"></div>
-          <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(30,27,75,0.9)); padding:6px 8px;">
-            <span class="badge badge-purple" style="font-size:10px;">✅ আনলকড</span>
-          </div>
-        </div>
-        <!-- Info -->
-        <div style="flex:1; padding:16px 14px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <div style="font-size:15px; font-weight:700; color:#a5b4fc; line-height:1.3; margin-bottom:6px;">পবিত্রতার পথে</div>
-            <div style="font-size:11px; color:var(--text2); line-height:1.6; margin-bottom:10px;">আধ্যাত্মিক শক্তি, আত্মনিয়ন্ত্রণ ও নতুন জীবনের এক যাত্রা</div>
-            <div style="font-size:11px; color:var(--text3);">৪৬ পেজ • বাংলা ভাষা</div>
-          </div>
-          <button class="btn btn-primary" style="margin-top:12px; padding:10px; font-size:13px;" onclick="openFlipbook(PURITY_PAGES)">
             📖 এখনই পড়ুন
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Book 3: রিকভারি সংস্করণ - UNLOCKED (part of app purchase) -->
+    <div style="padding:0 16px 10px; font-size:13px; font-weight:600; color:var(--text2);">🔒 প্রিমিয়াম</div>
+
+    <!-- Book 2: পবিত্রতার পথে - PREMIUM -->
+    <div style="margin:0 16px 14px; border-radius:var(--radius); background:var(--card); border:1px solid rgba(99,102,241,0.4); overflow:hidden;">
+      <div style="display:flex; gap:0;">
+        <!-- Cover placeholder -->
+        <div style="width:110px; flex-shrink:0; background:linear-gradient(160deg,#1e1b4b,#312e81); display:flex; align-items:center; justify-content:center; min-height:150px; position:relative;">
+          <div style="text-align:center;">
+            <div style="font-size:38px;">🌿</div>
+          </div>
+          <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(30,27,75,0.9)); padding:6px 8px;">
+            <span class="badge badge-purple" style="font-size:10px;">🔒 প্রিমিয়াম</span>
+          </div>
+        </div>
+        <!-- Info -->
+        <div style="flex:1; padding:16px 14px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="font-size:15px; font-weight:700; color:#a5b4fc; line-height:1.3; margin-bottom:6px;">পবিত্রতার পথে</div>
+            <div style="font-size:11px; color:var(--text2); line-height:1.6; margin-bottom:10px;">আধ্যাত্মিক ও বৈজ্ঞানিক মুক্তির পথ</div>
+            <div style="font-size:11px; color:var(--text3);">ইমান • আত্মিক জাগরণ • সফলতার গল্প</div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:12px; padding:10px; font-size:13px;" onclick="showToast('🔒 প্রিমিয়াম সদস্যতা প্রয়োজন')">
+            🔓 আনলক করুন
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Book 3: রিকভারি সংস্করণ - PREMIUM with Flipbook -->
     <div style="margin:0 16px 20px; border-radius:var(--radius); background:var(--card); border:1px solid rgba(245,158,11,0.4); overflow:hidden; box-shadow:0 4px 20px rgba(245,158,11,0.1);">
       <div style="display:flex; gap:0;">
         <!-- Real Cover -->
@@ -1727,7 +1798,7 @@
             style="width:100%; height:100%; object-fit:cover; display:block;">
           <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--card));"></div>
           <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(28,25,23,0.95)); padding:6px 8px;">
-            <span class="badge badge-gold" style="font-size:10px;">✅ আনলকড</span>
+            <span class="badge badge-gold" style="font-size:10px;">🔒 প্রিমিয়াম</span>
           </div>
         </div>
         <!-- Info -->
@@ -1737,13 +1808,18 @@
             <div style="font-size:11px; color:var(--text2); line-height:1.6; margin-bottom:6px;">নারী-পুরুষ উভয়ের আত্মনিয়ন্ত্রণের পূর্ণাঙ্গ গাইড</div>
             <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
               <span style="font-size:10px; color:var(--text3); background:var(--surface); padding:2px 8px; border-radius:10px; font-family:var(--font-ui);">১৪৫ পেজ</span>
+              <span style="font-size:10px; color:var(--gold); background:rgba(245,158,11,0.1); padding:2px 8px; border-radius:10px; font-family:var(--font-ui);">২৯৯ টাকা</span>
             </div>
           </div>
-          <button class="btn btn-gold" style="padding:10px; font-size:13px;" onclick="openFlipbook(MASTERCONTROL_PAGES)">
-            📖 এখনই পড়ুন
-          </button>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+            <button class="btn" style="padding:9px; font-size:13px; background:rgba(245,158,11,0.15); border:1.5px solid rgba(245,158,11,0.4); color:var(--gold);" onclick="openFlipbook()">
+              📖 ৫ পেজ ফ্রি দেখুন
+            </button>
+            <button class="btn btn-gold" style="padding:9px; font-size:13px;" onclick="openFlipbook()">
+              🔓 কিনুন ও Unlock করুন
+            </button>
+          </div>
         </div>
-
       </div>
     </div>
 
@@ -1837,111 +1913,6 @@
         <div>🟡 <strong>সপ্তাহ ৩–৪:</strong> ধারা শক্তিশালী করা</div>
         <div>🔵 <strong>সপ্তাহ ৫–৮:</strong> মধ্যবর্তী লেভেল + স্বাস্থ্য ট্র্যাকিং</div>
         <div>🟣 <strong>সপ্তাহ ৯–১২:</strong> উন্নত লেভেল + সম্পূর্ণ রিকভারি</div>
-      </div>
-    </div>
-
-    <!-- ===== MASTER CONTROL FRAMEWORK SECTION ===== -->
-    <div style="padding:20px 16px 8px; font-size:18px; font-weight:700;">🎯 MASTER CONTROL সূত্র</div>
-    <div style="padding:0 16px 14px; font-size:13px; color:var(--text2);">আত্মনিয়ন্ত্রণের ছয়টি নীতি — একটি পূর্ণাঙ্গ কাঠামো</div>
-
-    <div class="gradient-card" style="margin:0 16px 16px; padding:18px;">
-      <div class="gradient-card-content">
-        <div style="font-size:14px; font-weight:700; color:var(--text); margin-bottom:6px; font-family:var(--font-serif);">
-          "নিজেকে জয় করো, জীবনকে বদলে দাও।"
-        </div>
-        <div style="font-size:12px; color:var(--text2); line-height:1.7;">
-          ছয়টি অক্ষর — M · A · S · T · E · R — প্রতিটি একটি নির্দিষ্ট দক্ষতা প্রতিনিধিত্ব করে, যা একসাথে আত্মনিয়ন্ত্রণের সম্পূর্ণ পথ তৈরি করে।
-        </div>
-      </div>
-    </div>
-
-    <div class="edu-card" style="border-color:rgba(99,102,241,0.3);">
-      <div class="edu-header" onclick="toggleEdu(this)">
-        <div class="edu-title"><span>🧠</span> M — Mindfulness: নিজেকে দেখতে শেখো</div>
-        <span>▼</span>
-      </div>
-      <div class="edu-body">
-        অনেক মানুষ সারা জীবন অন্যদের পর্যবেক্ষণ করে, কিন্তু নিজেকে পর্যবেক্ষণ করে না। সে জানে অন্যের ভুল কোথায়, কিন্তু নিজের দুর্বলতাগুলো চিহ্নিত করতে পারে না।
-        <br><br>
-        পরিবর্তনের প্রথম ধাপই হলো আত্মসচেতনতা। তুমি কখন দুর্বল হও, কোন পরিস্থিতি তোমাকে প্রভাবিত করে এবং কোন অনুভূতি তোমাকে ভুল সিদ্ধান্তের দিকে ঠেলে দেয়—এসব বিষয় বুঝতে পারা অত্যন্ত গুরুত্বপূর্ণ।
-        <br><br>
-        নিজেকে পর্যবেক্ষণ করা মানে নিজেকে দোষারোপ করা নয়। বরং এটি নিজের বাস্তব অবস্থাকে জানা এবং সেখান থেকে উন্নতির পথ খুঁজে নেওয়া।
-        <br><br>
-        <em style="color:var(--text3);">"যে নিজেকে চেনে, সে তার যুদ্ধকেও চিনতে পারে।"</em>
-      </div>
-    </div>
-
-    <div class="edu-card" style="border-color:rgba(99,102,241,0.3);">
-      <div class="edu-header" onclick="toggleEdu(this)">
-        <div class="edu-title"><span>🔍</span> A — Awareness: দুর্বলতাকে চিনো</div>
-        <span>▼</span>
-      </div>
-      <div class="edu-body">
-        প্রতিটি মানুষের কিছু নির্দিষ্ট দুর্বলতা থাকে। কেউ একাকীত্বে দুর্বল হয়ে পড়ে, কেউ হতাশায়, কেউ আবার উদ্দেশ্যহীন সময়ে। এই দুর্বলতাগুলোকে লুকিয়ে রাখলে সেগুলো আরও শক্তিশালী হয়। কিন্তু যখন তুমি সেগুলোকে স্পষ্টভাবে চিনতে শুরু করবে, তখনই সেগুলোর উপর নিয়ন্ত্রণ প্রতিষ্ঠা করার সুযোগ তৈরি হবে।
-        <br><br>
-        নিজের ট্রিগারগুলো লিখে রাখো। কোন সময়ে, কোন পরিবেশে বা কোন অনুভূতির সময় তুমি সবচেয়ে বেশি সংগ্রাম করো—সেগুলো জানা পরিবর্তনের একটি গুরুত্বপূর্ণ অংশ।
-      </div>
-    </div>
-
-    <div class="edu-card" style="border-color:rgba(99,102,241,0.3);">
-      <div class="edu-header" onclick="toggleEdu(this)">
-        <div class="edu-title"><span>🛡️</span> S — Self Discipline: না বলতে শেখো</div>
-        <span>▼</span>
-      </div>
-      <div class="edu-body">
-        আত্মনিয়ন্ত্রণ কোনো একদিনে তৈরি হয় না। এটি ছোট ছোট সিদ্ধান্তের মাধ্যমে গড়ে ওঠে। প্রতিদিনের ক্ষুদ্র বিজয়গুলোই একসময় বড় পরিবর্তনের ভিত্তি তৈরি করে।
-        <br><br>
-        আজ একটি অপ্রয়োজনীয় কনটেন্ট এড়িয়ে যাওয়া, আজ সময়মতো ঘুমানো কিংবা আজ একটি ভালো অভ্যাস অনুসরণ করা—এসবই আত্মনিয়ন্ত্রণের অংশ।
-        <br><br>
-        শৃঙ্খলা কখনো স্বাধীনতার শত্রু নয়। বরং শৃঙ্খলাই মানুষকে প্রকৃত স্বাধীনতা দেয়।
-        <br><br>
-        <em style="color:var(--text3);">"যে নিজের প্রবৃত্তিকে নিয়ন্ত্রণ করতে পারে না, সে কখনোই সত্যিকার অর্থে স্বাধীন নয়।"</em>
-      </div>
-    </div>
-
-    <div class="edu-card" style="border-color:rgba(99,102,241,0.3);">
-      <div class="edu-header" onclick="toggleEdu(this)">
-        <div class="edu-title"><span>🕌</span> T — Taqwa: আল্লাহকে অনুভব করো</div>
-        <span>▼</span>
-      </div>
-      <div class="edu-body">
-        মানুষের প্রকৃত চরিত্র প্রকাশ পায় তখন, যখন সে একা থাকে। অন্যদের সামনে ভালো হওয়া সহজ, কিন্তু নির্জনতায় নিজেকে নিয়ন্ত্রণ করা কঠিন। তাকওয়া হলো সেই অভ্যন্তরীণ সচেতনতা, যা মানুষকে মনে করিয়ে দেয়—কেউ না দেখলেও আল্লাহ দেখছেন।
-        <br><br>
-        যে হৃদয়ে তাকওয়া জন্ম নেয়, সে শুধু শাস্তির ভয়ে পাপ থেকে দূরে থাকে না; বরং আল্লাহর ভালোবাসা ও সন্তুষ্টির আশায় নিজেকে সংযত রাখে।
-        <br><br>
-        <em style="color:var(--text3);">"নির্জনতায় তুমি যা, প্রকৃতপক্ষে তুমি তাই।"</em>
-      </div>
-    </div>
-
-    <div class="edu-card" style="border-color:rgba(99,102,241,0.3);">
-      <div class="edu-header" onclick="toggleEdu(this)">
-        <div class="edu-title"><span>⭐</span> E — Excellence: নিজের সেরা সংস্করণ হও</div>
-        <span>▼</span>
-      </div>
-      <div class="edu-body">
-        অনেকেই শুধু খারাপ অভ্যাস ছাড়তে চায়। কিন্তু সফল মানুষ শুধু খারাপ থেকে দূরে সরে না, সে ভালো কিছুর দিকে এগিয়ে যায়।
-        <br><br>
-        তুমি শুধু আসক্তি থেকে মুক্ত হওয়ার জন্য সৃষ্টি হওনি। তুমি সৃষ্টি হয়েছো একটি উদ্দেশ্য পূরণের জন্য। তোমার জ্ঞান, চরিত্র, ইবাদত, পরিবার ও সমাজের প্রতি দায়িত্ব—সবকিছুতেই উন্নতির সুযোগ আছে।
-        <br><br>
-        যখন জীবনে একটি বড় লক্ষ্য থাকে, তখন ছোট প্রলোভনগুলোর আকর্ষণ অনেক কমে যায়।
-        <br><br>
-        <em style="color:var(--text3);">"যার জীবনে লক্ষ্য নেই, সে সাময়িক আনন্দের কাছে সহজেই পরাজিত হয়।"</em>
-      </div>
-    </div>
-
-    <div class="edu-card" style="border-color:rgba(99,102,241,0.3); margin-bottom:20px;">
-      <div class="edu-header" onclick="toggleEdu(this)">
-        <div class="edu-title"><span>🎯</span> R — Responsibility: দায়িত্ব গ্রহণ করো</div>
-        <span>▼</span>
-      </div>
-      <div class="edu-body">
-        পরিবর্তনের সবচেয়ে গুরুত্বপূর্ণ ধাপগুলোর একটি হলো দায়িত্ব গ্রহণ করা। অনেক মানুষ ব্যর্থতার জন্য পরিবেশ, প্রযুক্তি, সমাজ কিংবা অন্য কাউকে দোষ দেয়। কিন্তু পরিবর্তন শুরু হয় তখন, যখন একজন মানুষ বলে—
-        <br><br>
-        <strong style="color:var(--text);">"আমার জীবনের দায়িত্ব আমার।"</strong>
-        <br><br>
-        অতীত পরিবর্তন করা সম্ভব নয়। কিন্তু আজকের সিদ্ধান্ত দিয়ে আগামীকাল গড়া সম্ভব। নিজের ভুল স্বীকার করা দুর্বলতা নয়; বরং সেটাই শক্তির পরিচয়।
-        <br><br>
-        দায়িত্বশীল মানুষ অজুহাত খোঁজে না, সমাধান খোঁজে।
       </div>
     </div>
 
@@ -2216,86 +2187,6 @@
 </div>
 
 <script>
-// ===== DATA CONSTANTS (must be defined before any function call that uses them) =====
-// App unlock codes (500 unique codes for one-time purchase unlock)
-const UNLOCK_CODES = ['MC-01NO-UHTC','MC-049E-NULQ','MC-050U-I22K','MC-085R-NTDR','MC-0DK0-GET8','MC-0DL5-E11E','MC-0EZZ-F8S2','MC-0FQL-DB2U','MC-0KB6-8RER','MC-0LVS-NUJZ','MC-0LZJ-JEGE','MC-0PDW-5PY6','MC-0S0R-2SDS','MC-0VGN-XB5J','MC-0W10-LBT3','MC-0YKN-FU84','MC-153S-FLSE','MC-15AH-DBVZ','MC-15Z8-VMUH','MC-199D-XJ37','MC-1B0Z-3NX3','MC-1BJ9-RM7P','MC-1G46-3SDY','MC-1G98-3EP9','MC-1HM3-8KSZ','MC-1N13-JCAT','MC-1R11-Q7UW','MC-1SWJ-CKJL','MC-1T2T-ALA7','MC-1TV1-8KGY','MC-1V2I-SQP4','MC-1W1H-T7PZ','MC-253J-2D54','MC-2BC2-NNUV','MC-2C9R-OS7Y','MC-2EZC-7FOV','MC-2M71-HSSB','MC-2XG8-P6BE','MC-2YGN-MBY4','MC-2Z0L-JCH2','MC-313F-POYI','MC-32OR-WIXZ','MC-36U8-UEIH','MC-3C9X-QYM5','MC-3CUP-8IJL','MC-3IFH-V1XG','MC-3JCZ-UCQM','MC-3JON-OU9I','MC-3JPX-GH30','MC-3OBY-GHGK','MC-3P91-I3VM','MC-3PT5-R5RC','MC-3QSQ-CQ30','MC-3T60-RJIW','MC-3UVU-LEMX','MC-3XLR-FCD6','MC-3ZKW-DEEK','MC-41IB-LJH7','MC-448N-7ODK','MC-458A-X40D','MC-45BG-34IQ','MC-45BM-1ENF','MC-48Y1-O4IZ','MC-493W-XA73','MC-4ABU-FWBU','MC-4CDP-QVL0','MC-4IVS-OLML','MC-4LDI-MSYJ','MC-4N89-QKNS','MC-4QXX-VA2I','MC-4T60-PLOZ','MC-4U9B-XF44','MC-4V1Q-X8ER','MC-4WSQ-T26Q','MC-4XYF-9IGF','MC-4YK1-B3D5','MC-4ZW9-XA3K','MC-53LC-58DR','MC-55J2-O7S3','MC-5935-A0L7','MC-5BWI-KOTC','MC-5CCA-SBUO','MC-5CRI-8BIX','MC-5IQV-NB4G','MC-5IZ3-1YRU','MC-5LXO-6QJI','MC-5XYF-C4KL','MC-64YF-DS0D','MC-69UG-NEKR','MC-6G5G-79OR','MC-6KF1-622V','MC-6NOU-HFJ7','MC-6QDY-4LMC','MC-6QLZ-2RWG','MC-6SM5-RRVS','MC-6SZN-9DDE','MC-6XVA-J2K8','MC-6YS4-45GD','MC-6ZS6-2YWE','MC-750C-EHLX','MC-7875-AUD9','MC-7C7B-O119','MC-7E8G-8JDP','MC-7FXZ-V4U3','MC-7LN2-3Y30','MC-7N8L-A100','MC-7OQ2-ZDO7','MC-7SRC-BPLJ','MC-7ZJ3-SWEB','MC-82N2-ATQY','MC-832E-JX5T','MC-874F-RHOC','MC-8B25-SQ8C','MC-8CGN-0T6D','MC-8CQK-4LTA','MC-8DAL-FYO1','MC-8HYE-XF7J','MC-8MDD-4V30','MC-8PAJ-SSUU','MC-8RIE-C4D1','MC-8SYL-EMRU','MC-8X80-RMHR','MC-92MT-R6SN','MC-961J-88QE','MC-96QE-3RZS','MC-9BOQ-0IQ2','MC-9BP4-M18O','MC-9D31-K9QM','MC-9E7E-OBJL','MC-9FTA-XP0W','MC-9KWV-08HH','MC-9MX2-X18H','MC-9RBS-V55P','MC-9T84-AZYT','MC-9TZE-5R5U','MC-A7TZ-0YNC','MC-AFEY-UHZ1','MC-AFYH-1FKJ','MC-AKHE-JLA0','MC-ASIF-PWIO','MC-ASNW-YWRR','MC-ATAT-J9A3','MC-AXEQ-BNHL','MC-AYQ6-WW8Y','MC-AZ39-PECN','MC-B0OI-H5CS','MC-B1QX-6GVW','MC-B2KN-FTU2','MC-B9LZ-S34J','MC-BA75-UUZP','MC-BBXU-X1OX','MC-BC2S-WSOZ','MC-BD2Q-E4PA','MC-BFFZ-ZDVG','MC-BMAE-38SR','MC-BZUG-0IT2','MC-C11E-RTJ5','MC-C76U-B7L8','MC-C9H4-2M44','MC-CAGR-P2U4','MC-CCPR-HVLZ','MC-CD5G-LQJ5','MC-CDYK-0X65','MC-CHJ7-55NF','MC-CJ4T-0SEK','MC-CJG8-VUAZ','MC-CJWT-L9TQ','MC-CNBH-6NQQ','MC-CPPR-CJIW','MC-CSLQ-C3C5','MC-CTWJ-LSH3','MC-CVS4-F8CG','MC-CWBF-UK9E','MC-CWI6-4CIY','MC-CWN2-Y8FV','MC-D14V-E92M','MC-D2KD-1POX','MC-D44K-1J6F','MC-D84U-89YJ','MC-DBDW-2PCN','MC-DHGZ-Z0JK','MC-DHYL-URTP','MC-DIHS-A7HE','MC-DPPQ-0Y9D','MC-DTBH-55RB','MC-DVLN-KND6','MC-DW6L-QWLV','MC-DWWO-8NBH','MC-DYT9-MOGE','MC-DZR1-YXR2','MC-E088-O98B','MC-E13N-3BZT','MC-E63L-BQGU','MC-E9VI-FTTD','MC-EAL2-W37D','MC-EAVT-8K06','MC-EDHH-JSHZ','MC-EF82-8XG8','MC-EFQJ-G02U','MC-EHE2-ATN2','MC-EI3Z-RRHF','MC-EJ31-GYMD','MC-EK3Z-EZQA','MC-ELRQ-VSLW','MC-EN60-6N9R','MC-EUC1-HH5L','MC-F6A4-FEJG','MC-F8KR-D5EQ','MC-F90K-M3TZ','MC-FA39-E3NW','MC-FEL6-246H','MC-FFCX-HGNZ','MC-FFLZ-M764','MC-FL0U-KEYZ','MC-FLSE-HUDS','MC-FLUL-1RSR','MC-FNKO-MV2X','MC-FOY4-DD1V','MC-FXHK-C856','MC-G0FN-9XUY','MC-G244-79QT','MC-G2QZ-W3C1','MC-G8SB-I4Q2','MC-G8TA-CY15','MC-GC5W-I6FQ','MC-GCSO-TDHH','MC-GFLI-JI18','MC-GGSN-PUEV','MC-GLH6-2C9T','MC-GNZS-43C5','MC-GO8J-N42X','MC-GSES-6M03','MC-GV0E-38DA','MC-GV3Z-6BZ8','MC-GYSP-ENGW','MC-GZR7-TXCB','MC-H2M5-ZJA8','MC-H61I-AOIM','MC-HE7U-R23G','MC-HL88-KZRU','MC-HUKW-QVR1','MC-HV3A-3ZMF','MC-I10K-QSOS','MC-I3QK-2IAG','MC-I7P5-TB94','MC-I9G5-DZX5','MC-I9NB-74X2','MC-IAAK-YTT3','MC-IBU4-FMPK','MC-ID25-OWF7','MC-IE0R-NUJJ','MC-IMJ7-0E3P','MC-IN3O-EUVT','MC-IQUW-RXZE','MC-IR4C-OWGZ','MC-IVH6-T1NT','MC-IXZA-REIY','MC-IZZQ-Y72W','MC-J3MU-URMY','MC-J49I-TN7S','MC-JCNS-6G29','MC-JEGQ-TOAM','MC-JEYN-9382','MC-JGZL-MA5U','MC-JI9K-QDGB','MC-JIDK-NWI5','MC-JJA2-6YFP','MC-JLZF-FLB7','MC-JOQW-5DSK','MC-JTGQ-01TE','MC-JUY0-BVR6','MC-JW25-36ZX','MC-JWTE-KTSG','MC-JXEP-Q85J','MC-K0AX-YCEL','MC-K0VM-59M6','MC-K2L0-D1B4','MC-K2VM-WWYZ','MC-K30L-VYLK','MC-K3NY-9V20','MC-K83T-QLL8','MC-K9TR-74QG','MC-KBP2-QD6V','MC-KBRH-7LAY','MC-KCD0-RLEX','MC-KDC9-X5JZ','MC-KDGI-GATJ','MC-KEH5-SW22','MC-KKHZ-LM72','MC-KKV9-RFTM','MC-KKZM-PJRH','MC-KRZD-5E9P','MC-KTAK-PUXQ','MC-KTLZ-KJ49','MC-L58K-XO9T','MC-L68N-TK63','MC-L8A7-8E9R','MC-LA8S-8HMB','MC-LI07-6A3K','MC-LJEF-Y3ZB','MC-LM34-9EL8','MC-LMH1-T939','MC-LORX-DTG5','MC-LX6D-UT07','MC-LY8O-ZCYW','MC-M0L2-LJK4','MC-MB5M-9J98','MC-ME8F-8409','MC-MG87-OI0E','MC-MJSR-D9Q4','MC-MOXS-FH4G','MC-MUFM-8ZOV','MC-MVXP-J4HN','MC-MYX4-44NL','MC-MZSG-IPPS','MC-N2QB-6GS8','MC-N8LF-JDTV','MC-N9J2-QP89','MC-NAL3-GYWI','MC-NAM1-48P0','MC-NF7C-3DD0','MC-NKB4-EHOU','MC-NOLJ-Q52W','MC-NQJQ-IJC1','MC-NTRF-ZWKX','MC-NVG5-VMF6','MC-NY18-1ACJ','MC-NZ1U-DBFW','MC-O30U-BMC9','MC-O6L1-F90S','MC-O8E7-FLQH','MC-ODSX-4NXV','MC-OFN1-R4KZ','MC-OFQE-WAOU','MC-OFWB-0HPM','MC-OHP6-VZ41','MC-OIQ2-Q4QE','MC-OKEP-7Y6W','MC-OM5I-GQPK','MC-OQW9-JA2M','MC-OS6Z-LE6K','MC-OS9X-TOGN','MC-OZ0K-Z4Z7','MC-P4E0-5QMK','MC-P8HQ-MABS','MC-P9W4-J66C','MC-PAC5-6T4U','MC-PBHS-AHXT','MC-PDTZ-91X7','MC-PFDR-WB2S','MC-PHR6-2GDS','MC-PHT0-HL9X','MC-PJA1-WJ0T','MC-PK0Q-TL3Q','MC-PKYR-YBOV','MC-PNSM-43D8','MC-PSEI-MVIH','MC-PVS7-HZIO','MC-Q5V7-C6S5','MC-Q9K6-RE4Q','MC-QIMQ-ODPX','MC-QJIC-JDAN','MC-QKBH-B7S9','MC-QO1V-SMAD','MC-QPGB-7R3O','MC-QTXH-I15C','MC-QVIN-DH4S','MC-QXMC-THPH','MC-QZCU-CTSU','MC-R5XQ-T4P5','MC-R7S2-0CV3','MC-RDML-Y4LY','MC-RIUU-9K9X','MC-RIXA-11DP','MC-RO8B-NP84','MC-ROYR-6CCV','MC-RRPZ-LK3E','MC-RTEO-2T8F','MC-RUNJ-DU0I','MC-RWK8-R2YK','MC-RXDO-UADV','MC-S1K9-YE9O','MC-SB5I-QNF7','MC-SG65-KXVF','MC-SLG6-MM1Z','MC-SPOF-V177','MC-SQ0O-XFQ8','MC-SXVW-VM4W','MC-SZDX-IMYN','MC-T1GH-R09S','MC-T2M6-TWD1','MC-T63J-3R30','MC-T64Z-7W2S','MC-T7O7-5RH8','MC-T7ZE-WVIY','MC-T9NT-3W5U','MC-TB74-RS7G','MC-TB9X-XAYP','MC-TEIY-ZCOT','MC-TGV4-4FTJ','MC-TGXN-X4SN','MC-TIRC-9ZD7','MC-TJ1G-M25L','MC-TLCX-LVPY','MC-TOW4-YCZ0','MC-TRP0-J43D','MC-TTQL-GZUI','MC-TVHH-PBMY','MC-TWBO-ZD1A','MC-TWDL-9ZS1','MC-TXW1-VZC7','MC-U0EN-V5SN','MC-U6HC-36KO','MC-U8IO-GXPB','MC-UDKT-MONR','MC-UIJN-WPAY','MC-UJV6-OH9S','MC-UNLP-AIH0','MC-UPFL-N4RX','MC-UUG9-5RLR','MC-UZFK-8UT0','MC-V1ZO-CFI4','MC-V23G-XJ0M','MC-V2Y4-XKSS','MC-V5G1-0UR5','MC-V6TT-9Q1N','MC-V78H-U7F0','MC-VBJF-VYB6','MC-VDZ4-X1ZH','MC-VFFQ-OT8H','MC-VGWW-4FYB','MC-VHDK-8LW2','MC-VT99-7E4U','MC-VWRB-7F6F','MC-VYIE-6IVW','MC-W3ZP-08J3','MC-W5WF-CPKJ','MC-WAJ1-G1R1','MC-WHEF-0VOT','MC-WHVN-ZH13','MC-WHWK-MY9X','MC-WKSH-Y8NB','MC-WM31-YIHA','MC-WNNH-J7XV','MC-WPR9-7Y2L','MC-WXRU-M2LH','MC-X43W-FSQG','MC-X4W6-XLPU','MC-X74D-0GJY','MC-X7EE-DTJV','MC-X7N8-9LTA','MC-X7PT-X63C','MC-XAA2-ILGB','MC-XAJI-0Y6D','MC-XD9C-SS9T','MC-XFGC-AQVK','MC-XGMP-W5D3','MC-XID4-N1U3','MC-XJN6-FOKZ','MC-XJVE-3DZE','MC-XKDQ-95G3','MC-XLL4-ZKLO','MC-XMXB-9YO1','MC-XP9N-56NY','MC-XPNM-JQY3','MC-XTXM-GTT0','MC-XUJ3-AC6P','MC-XVHA-GKC4','MC-XYJO-A21A','MC-XYVG-IUI9','MC-XYZX-9JPN','MC-Y08P-0FOD','MC-Y36D-DFGS','MC-Y4X4-1DNT','MC-Y620-N8TT','MC-Y72I-VGLY','MC-Y8N1-UTOX','MC-Y9V8-6WZS','MC-YAR8-21UZ','MC-YD82-795E','MC-YDMT-8VT4','MC-YJ38-XRG2','MC-YJXR-PJ1E','MC-YKL1-CQ99','MC-YMEN-VG3K','MC-YO4R-CB1K','MC-YP04-K43S','MC-YSXP-NNGH','MC-YT8Q-ZPKY','MC-YV37-DIA5','MC-YX9T-RFLQ','MC-YXDW-2ZCF','MC-Z15B-CW79','MC-Z74L-AV71','MC-ZBIK-CIDK','MC-ZGE2-J51B','MC-ZHWJ-R64D','MC-ZW0L-DALM','MC-ZWFF-HHCM','MC-ZY1U-U9YM'];
-
-// "মাস্টার কন্ট্রোল: রিকভারি সংস্করণ" - full book (145 pages)
-const MASTERCONTROL_PAGES = [
-  'images/recovery-001.jpg', 'images/recovery-002.jpg', 'images/recovery-003.jpg',
-  'images/recovery-004.jpg', 'images/recovery-005.jpg', 'images/recovery-006.jpg',
-  'images/recovery-007.jpg', 'images/recovery-008.jpg', 'images/recovery-009.jpg',
-  'images/recovery-010.jpg', 'images/recovery-011.jpg', 'images/recovery-012.jpg',
-  'images/recovery-013.jpg', 'images/recovery-014.jpg', 'images/recovery-015.jpg',
-  'images/recovery-016.jpg', 'images/recovery-017.jpg', 'images/recovery-018.jpg',
-  'images/recovery-019.jpg', 'images/recovery-020.jpg', 'images/recovery-021.jpg',
-  'images/recovery-022.jpg', 'images/recovery-023.jpg', 'images/recovery-024.jpg',
-  'images/recovery-025.jpg', 'images/recovery-026.jpg', 'images/recovery-027.jpg',
-  'images/recovery-028.jpg', 'images/recovery-029.jpg', 'images/recovery-030.jpg',
-  'images/recovery-031.jpg', 'images/recovery-032.jpg', 'images/recovery-033.jpg',
-  'images/recovery-034.jpg', 'images/recovery-035.jpg', 'images/recovery-036.jpg',
-  'images/recovery-037.jpg', 'images/recovery-038.jpg', 'images/recovery-039.jpg',
-  'images/recovery-040.jpg', 'images/recovery-041.jpg', 'images/recovery-042.jpg',
-  'images/recovery-043.jpg', 'images/recovery-044.jpg', 'images/recovery-045.jpg',
-  'images/recovery-046.jpg', 'images/recovery-047.jpg', 'images/recovery-048.jpg',
-  'images/recovery-049.jpg', 'images/recovery-050.jpg', 'images/recovery-051.jpg',
-  'images/recovery-052.jpg', 'images/recovery-053.jpg', 'images/recovery-054.jpg',
-  'images/recovery-055.jpg', 'images/recovery-056.jpg', 'images/recovery-057.jpg',
-  'images/recovery-058.jpg', 'images/recovery-059.jpg', 'images/recovery-060.jpg',
-  'images/recovery-061.jpg', 'images/recovery-062.jpg', 'images/recovery-063.jpg',
-  'images/recovery-064.jpg', 'images/recovery-065.jpg', 'images/recovery-066.jpg',
-  'images/recovery-067.jpg', 'images/recovery-068.jpg', 'images/recovery-069.jpg',
-  'images/recovery-070.jpg', 'images/recovery-071.jpg', 'images/recovery-072.jpg',
-  'images/recovery-073.jpg', 'images/recovery-074.jpg', 'images/recovery-075.jpg',
-  'images/recovery-076.jpg', 'images/recovery-077.jpg', 'images/recovery-078.jpg',
-  'images/recovery-079.jpg', 'images/recovery-080.jpg', 'images/recovery-081.jpg',
-  'images/recovery-082.jpg', 'images/recovery-083.jpg', 'images/recovery-084.jpg',
-  'images/recovery-085.jpg', 'images/recovery-086.jpg', 'images/recovery-087.jpg',
-  'images/recovery-088.jpg', 'images/recovery-089.jpg', 'images/recovery-090.jpg',
-  'images/recovery-091.jpg', 'images/recovery-092.jpg', 'images/recovery-093.jpg',
-  'images/recovery-094.jpg', 'images/recovery-095.jpg', 'images/recovery-096.jpg',
-  'images/recovery-097.jpg', 'images/recovery-098.jpg', 'images/recovery-099.jpg',
-  'images/recovery-100.jpg', 'images/recovery-101.jpg', 'images/recovery-102.jpg',
-  'images/recovery-103.jpg', 'images/recovery-104.jpg', 'images/recovery-105.jpg',
-  'images/recovery-106.jpg', 'images/recovery-107.jpg', 'images/recovery-108.jpg',
-  'images/recovery-109.jpg', 'images/recovery-110.jpg', 'images/recovery-111.jpg',
-  'images/recovery-112.jpg', 'images/recovery-113.jpg', 'images/recovery-114.jpg',
-  'images/recovery-115.jpg', 'images/recovery-116.jpg', 'images/recovery-117.jpg',
-  'images/recovery-118.jpg', 'images/recovery-119.jpg', 'images/recovery-120.jpg',
-  'images/recovery-121.jpg', 'images/recovery-122.jpg', 'images/recovery-123.jpg',
-  'images/recovery-124.jpg', 'images/recovery-125.jpg', 'images/recovery-126.jpg',
-  'images/recovery-127.jpg', 'images/recovery-128.jpg', 'images/recovery-129.jpg',
-  'images/recovery-130.jpg', 'images/recovery-131.jpg', 'images/recovery-132.jpg',
-  'images/recovery-133.jpg', 'images/recovery-134.jpg', 'images/recovery-135.jpg',
-  'images/recovery-136.jpg', 'images/recovery-137.jpg', 'images/recovery-138.jpg',
-  'images/recovery-139.jpg', 'images/recovery-140.jpg', 'images/recovery-141.jpg',
-  'images/recovery-142.jpg', 'images/recovery-143.jpg', 'images/recovery-144.jpg',
-  'images/recovery-145.jpg'
-];
-
-// Free preview: first 5 pages of the real book
-const PREVIEW_PAGES = MASTERCONTROL_PAGES.slice(0, 5);
-
-// "মাস্টার কন্ট্রোল: পবিত্রতার পথে" - book 2 (46 pages)
-const PURITY_PAGES = [
-  'images/purity-01.jpg', 'images/purity-02.jpg', 'images/purity-03.jpg',
-  'images/purity-04.jpg', 'images/purity-05.jpg', 'images/purity-06.jpg',
-  'images/purity-07.jpg', 'images/purity-08.jpg', 'images/purity-09.jpg',
-  'images/purity-10.jpg', 'images/purity-11.jpg', 'images/purity-12.jpg',
-  'images/purity-13.jpg', 'images/purity-14.jpg', 'images/purity-15.jpg',
-  'images/purity-16.jpg', 'images/purity-17.jpg', 'images/purity-18.jpg',
-  'images/purity-19.jpg', 'images/purity-20.jpg', 'images/purity-21.jpg',
-  'images/purity-22.jpg', 'images/purity-23.jpg', 'images/purity-24.jpg',
-  'images/purity-25.jpg', 'images/purity-26.jpg', 'images/purity-27.jpg',
-  'images/purity-28.jpg', 'images/purity-29.jpg', 'images/purity-30.jpg',
-  'images/purity-31.jpg', 'images/purity-32.jpg', 'images/purity-33.jpg',
-  'images/purity-34.jpg', 'images/purity-35.jpg', 'images/purity-36.jpg',
-  'images/purity-37.jpg', 'images/purity-38.jpg', 'images/purity-39.jpg',
-  'images/purity-40.jpg', 'images/purity-41.jpg', 'images/purity-42.jpg',
-  'images/purity-43.jpg', 'images/purity-44.jpg', 'images/purity-45.jpg',
-  'images/purity-46.jpg'
-];
-
 // =====================
 // STATE & STORAGE
 // =====================
@@ -2323,7 +2214,6 @@ let state = {
   settings: { vibration: true, sound: true, reminders: { morning: true, noon: false, night: true } },
   onboarded: false,
   disclaimerSeen: false,
-  unlocked: false,
   habitCompletedDays: 0,
   pregnancyMode: false,
   pregnancyTrimester: 1,
@@ -2378,32 +2268,8 @@ function finishOnboarding() {
   state.onboarded = true;
   saveState();
   document.getElementById('onboarding').style.display = 'none';
-  if (state.unlocked) {
-    document.getElementById('app').style.display = 'flex';
-    initApp();
-  } else {
-    document.getElementById('unlock-screen').style.display = 'flex';
-  }
-}
-
-function tryUnlockApp() {
-  const input = document.getElementById('unlock-code-input');
-  const errMsg = document.getElementById('unlock-error-msg');
-  const code = input.value.trim().toUpperCase();
-  if (!code) { errMsg.textContent = 'দয়া করে কোড দিন'; return; }
-  if (UNLOCK_CODES.includes(code)) {
-    state.unlocked = true;
-    saveState();
-    errMsg.textContent = '';
-    document.getElementById('unlock-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'flex';
-    initApp();
-    if (typeof burstConfetti === 'function') burstConfetti();
-  } else {
-    errMsg.textContent = '❌ কোডটি সঠিক নয়। আবার চেষ্টা করুন।';
-    input.style.borderColor = 'var(--red)';
-    setTimeout(() => { input.style.borderColor = 'var(--border)'; }, 1800);
-  }
+  document.getElementById('app').style.display = 'flex';
+  initApp();
 }
 
 // =====================
@@ -4300,137 +4166,89 @@ let fbFreeTouchStartX = 0;
 let fbFreeTitle = '';
 
 function openFlipbookFree(url, title) {
-  if (url !== 'local:tomarshokti') { window.open(url, '_blank'); return; }
-  const pages = BOOK_PAGES;
-  document.getElementById('flipbook-free-title').textContent = '📖 ' + title;
-  document.getElementById('flipbook-free-page-counter').textContent = 'মোট ' + pages.length + ' পেজ';
-  const container = document.getElementById('fb-free-pages-container');
-  container.innerHTML = '';
-  pages.forEach((src, i) => {
-    const wrapper = document.createElement('div');
-    wrapper.style.cssText = 'position:relative;border-radius:10px;overflow:hidden;background:#111;';
-    const pageNum = document.createElement('div');
-    pageNum.style.cssText = 'position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#aaa;font-size:10px;padding:2px 7px;border-radius:10px;font-family:sans-serif;z-index:2;';
-    pageNum.textContent = (i+1) + ' / ' + pages.length;
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = 'পেজ ' + (i+1);
-    img.draggable = false;
-    img.style.cssText = 'width:100%;display:block;-webkit-user-select:none;user-select:none;touch-action:pan-y;pointer-events:auto;';
-    img.oncontextmenu = () => false;
-    wrapper.appendChild(pageNum);
-    wrapper.appendChild(img);
-    container.appendChild(wrapper);
-  });
-  const modal = document.getElementById('flipbook-modal-free');
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  document.getElementById('fb-free-scroll-area').scrollTop = 0;
+  // Check if this is a local book (url starts with 'local:')
+  if (url === 'local:tomarshokti') {
+    fbFreeTitle = title;
+    fbFreeCurrentPage = 0;
+    fbFreeZoom = 1;
+    document.getElementById('flipbook-free-title').textContent = '📖 ' + title;
+    document.getElementById('fb-free-img').style.transform = 'scale(1)';
+    fbFreeShowPage(0);
+    const modal = document.getElementById('flipbook-modal-free');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    fbFreeSetupTouch();
+    return;
+  }
+  // Fallback: browser
+  window.open(url, '_blank');
 }
 
+function fbFreeShowPage(n) {
+  const total = BOOK_PAGES.length;
+  fbFreeCurrentPage = Math.max(0, Math.min(n, total - 1));
+  const img = document.getElementById('fb-free-img');
+
+  // Flip animation
+  img.style.opacity = '0';
+  img.style.transform = `scale(${fbFreeZoom}) rotateY(15deg)`;
+  setTimeout(() => {
+    img.src = BOOK_PAGES[fbFreeCurrentPage];
+    img.style.transform = `scale(${fbFreeZoom}) rotateY(0deg)`;
+    img.style.opacity = '1';
+  }, 150);
+
+  // Update counter
+  const pct = ((fbFreeCurrentPage + 1) / total) * 100;
+  document.getElementById('fb-free-progress').style.width = pct + '%';
+  document.getElementById('fb-free-page-num').textContent = (fbFreeCurrentPage + 1) + ' / ' + total;
+  document.getElementById('flipbook-free-page-counter').textContent = 'পেজ ' + (fbFreeCurrentPage + 1) + '/' + total;
+
+  // Button states
+  document.getElementById('fb-free-prev-btn').style.opacity = fbFreeCurrentPage === 0 ? '0.3' : '1';
+  document.getElementById('fb-free-next-btn').style.opacity = fbFreeCurrentPage === total - 1 ? '0.3' : '1';
+}
+
+function fbFreeNext() {
+  if (fbFreeCurrentPage < BOOK_PAGES.length - 1) fbFreeShowPage(fbFreeCurrentPage + 1);
+}
+function fbFreePrev() {
+  if (fbFreeCurrentPage > 0) fbFreeShowPage(fbFreeCurrentPage - 1);
+}
+function fbFreeZoomIn() {
+  fbFreeZoom = Math.min(fbFreeZoom + 0.2, 3);
+  document.getElementById('fb-free-img').style.transform = `scale(${fbFreeZoom})`;
+}
+function fbFreeZoomOut() {
+  fbFreeZoom = Math.max(fbFreeZoom - 0.2, 0.5);
+  document.getElementById('fb-free-img').style.transform = `scale(${fbFreeZoom})`;
+}
 function fbFreeClose() {
   document.getElementById('flipbook-modal-free').style.display = 'none';
+  document.getElementById('fb-free-img').src = '';
   document.body.style.overflow = '';
 }
-
-// ===== ARTICLES =====
-const ARTICLES = {
-  'block-porn': {
-    title: 'ডিভাইস ব্লকিং গাইড',
-    html: `
-      <h1>🛡️ ফোন ও কম্পিউটার থেকে পর্নোগ্রাফি ব্লক করার সম্পূর্ণ প্রসেস</h1>
-      <div class="article-subtitle">ধাপে ধাপে প্র্যাক্টিক্যাল গাইডলাইন — নিজের ডিভাইসকে একটি নিরাপদ দুর্গে পরিণত করুন</div>
-
-      <p>ইচ্ছাশক্তি একা যথেষ্ট নয়, যদি হাতের স্মার্টফোনে ২৪ ঘণ্টা অবাধ ইন্টারনেট খোলা থাকে। গবেষণা বলে, <strong>পরিবেশগত বাধা</strong> তৈরি করা মানসিক সংকল্পের চেয়ে অনেক বেশি কার্যকর — কারণ এটি impulse মুহূর্তে চিন্তা করার সময়টুকু কেড়ে নেয় না, বরং তার আগেই পথ বন্ধ করে দেয়। নিচের ধাপগুলো অনুসরণ করে আজই আপনার ডিভাইসগুলো নিরাপদ করুন।</p>
-
-      <h2>১. ফোনে DNS-ভিত্তিক ব্লকিং (সবচেয়ে সহজ ও কার্যকর)</h2>
-      <p>DNS ব্লকার ব্যবহার করলে ব্রাউজার বা অ্যাপ থেকে আলাদা করে কিছু ইনস্টল করতে হয় না — পুরো ডিভাইসের ইন্টারনেট ট্রাফিক ফিল্টার হয়ে যায়।</p>
-      <ul>
-        <li><strong>Android:</strong> Settings → Network & Internet → Private DNS → এখানে <span class="app-pill">dns.cleanbrowsing.org</span> বা <span class="app-pill">family.cloudflare-dns.com</span> বসিয়ে দিন।</li>
-        <li><strong>iPhone:</strong> Settings → Wi-Fi → নেটওয়ার্কের পাশের (i) আইকনে ট্যাপ করে Configure DNS → Manual করে উপরের যেকোনো একটি DNS যোগ করুন।</li>
-        <li><strong>কম্পিউটার (Windows/Mac):</strong> Network Settings থেকে DNS সার্ভার ম্যানুয়ালি একই ঠিকানায় পরিবর্তন করুন।</li>
-      </ul>
-      <div class="article-tip"><b>💡 টিপস:</b> CleanBrowsing বা Cloudflare Family DNS সম্পূর্ণ ফ্রি, এবং এটি অ্যাডাল্ট কন্টেন্ট স্বয়ংক্রিয়ভাবে ব্লক করে দেয় — কোনো অ্যাপ ইনস্টল করার দরকার নেই।</div>
-
-      <h2>২. ডেডিকেটেড ব্লকিং অ্যাপ ব্যবহার করুন</h2>
-      <p>শুধু DNS যথেষ্ট নয়, কারণ VPN দিয়ে এটি বাইপাস করা সম্ভব। তাই দ্বিতীয় স্তর হিসেবে একটি ব্লকিং অ্যাপ যোগ করুন যেখানে <strong>পাসওয়ার্ড অন্য কারো কাছে</strong> (বন্ধু, পরিবারের সদস্য) থাকে, যাতে নিজে নিজে সহজে বন্ধ করতে না পারেন।</p>
-      <ul>
-        <li><strong>Android:</strong> <span class="app-pill">Covenant Eyes</span>, <span class="app-pill">BlockerX</span>, বা <span class="app-pill">Bark</span></li>
-        <li><strong>iPhone:</strong> Screen Time-এর Content Restrictions + <span class="app-pill">Covenant Eyes</span></li>
-        <li><strong>কম্পিউটার:</strong> <span class="app-pill">Cold Turkey Blocker</span> বা <span class="app-pill">Freedom</span></li>
-      </ul>
-
-      <h2>৩. ফোনের বিল্ট-ইন প্যারেন্টাল/স্ক্রিন টাইম কন্ট্রোল চালু করুন</h2>
-      <p>প্রতিটি স্মার্টফোনেই ফ্রি বিল্ট-ইন টুল আছে যা দিয়ে কন্টেন্ট রেস্ট্রিকশন সেট করা যায়:</p>
-      <ul>
-        <li><strong>Android:</strong> Google Family Link অ্যাপ ইনস্টল করুন, নিজের ফোনকে "child device" হিসেবে অন্য একটি ট্রাস্টেড ফোনের (যেমন পরিবারের কারো) সাথে যুক্ত করুন — সেখান থেকেই Chrome SafeSearch ও অ্যাপ রেস্ট্রিকশন নিয়ন্ত্রণ হবে।</li>
-        <li><strong>iPhone:</strong> Settings → Screen Time → Content & Privacy Restrictions → Web Content → Limit Adult Websites। এরপর একটি Screen Time পাসকোড সেট করুন যা শুধু আপনার বিশ্বস্ত কেউ জানবে।</li>
-      </ul>
-
-      <h2>৪. ব্রাউজার-লেভেলে SafeSearch বাধ্যতামূলক করুন</h2>
-      <p>Google, Bing, YouTube — প্রতিটির নিজস্ব SafeSearch ফিচার আছে যা এক্সপ্লিসিট কন্টেন্ট ফিল্টার করে। DNS-এর মাধ্যমে এটি "লক" করে দেওয়া যায়, যাতে কেউ নিজে নিজে অফ করতে না পারে — এর জন্য <span class="app-pill">forcesafesearch.google.com</span> এর মতো DNS-লেভেল ফোর্সিং সার্চ করে দেখতে পারেন, অথবা ব্লকিং অ্যাপের মাধ্যমে এটি বাধ্যতামূলক করুন।</p>
-
-      <h2>৫. অ্যাকাউন্টেবিলিটি পার্টনার রাখুন</h2>
-      <p>প্রযুক্তিগত ব্লকিং কখনোই ১০০% নিশ্ছিদ্র নয় — সবচেয়ে শক্তিশালী সুরক্ষা আসে <strong>সামাজিক জবাবদিহিতা</strong> থেকে। একজন বিশ্বস্ত মানুষ (বন্ধু, বড় ভাই, মেন্টর) নির্বাচন করুন যিনি:</p>
-      <ul>
-        <li>আপনার ব্লকিং অ্যাপের পাসওয়ার্ড/পাসকোড নিজের কাছে রাখবেন</li>
-        <li>সাপ্তাহিক একটি ছোট চেক-ইন করবেন ("এই সপ্তাহ কেমন গেল?")</li>
-        <li>বিচার না করে শুনবেন, শুধু সাপোর্ট দেবেন</li>
-      </ul>
-      <div class="article-tip"><b>💡 কেন কাজ করে:</b> জানা থাকলে যে কেউ একজন জবাবদিহি চাইবে, মস্তিষ্ক impulse মুহূর্তে দ্বিতীয়বার ভাবতে বাধ্য হয় — এটি কগনিটিভ বিহেভিয়ারাল থেরাপির একটি প্রমাণিত কৌশল।</div>
-
-      <h2>৬. রাতের সময়সূচি নিয়ন্ত্রণ করুন</h2>
-      <p>বেশিরভাগ রিল্যাপস হয় গভীর রাতে, একা ঘরে, দরজা বন্ধ অবস্থায়। তাই:</p>
-      <ul>
-        <li>ফোন চার্জে দেওয়ার জায়গা বেডরুমের বাইরে করে ফেলুন</li>
-        <li>Android-এ Digital Wellbeing বা iPhone-এ Downtime ফিচার দিয়ে রাত ১১টা থেকে সকাল ৬টা পর্যন্ত ব্রাউজার ও সোশ্যাল মিডিয়া অ্যাপ অটো-ব্লক করে রাখুন</li>
-        <li>ফোনের বদলে ঘড়ির অ্যালার্ম ব্যবহার করুন, যাতে রাতে ফোন হাতে নেওয়ার কোনো অজুহাত না থাকে</li>
-      </ul>
-
-      <div class="article-warn"><b>⚠️ মনে রাখবেন:</b> কোনো ব্লকার ১০০% ফাঁকফোকরহীন নয় — এবং সেটাই স্বাভাবিক। লক্ষ্য নিখুঁত প্রতিরোধ ব্যবস্থা তৈরি করা নয়, বরং <strong>impulsive মুহূর্ত আর কাজের মাঝে যথেষ্ট ঘর্ষণ (friction)</strong> তৈরি করা, যাতে চিন্তা করার সময় পাওয়া যায় এবং সঠিক সিদ্ধান্ত নেওয়া সহজ হয়।</div>
-
-      <h2>৭. একসাথে একাধিক স্তর ব্যবহার করুন</h2>
-      <p>একটিমাত্র পদ্ধতির ওপর নির্ভর করবেন না। সবচেয়ে কার্যকর ফলাফল পেতে একসাথে কয়েকটি স্তর ব্যবহার করুন:</p>
-      <ul>
-        <li>✅ DNS ব্লকিং (Layer ১)</li>
-        <li>✅ ডেডিকেটেড ব্লকিং অ্যাপ, পাসওয়ার্ড অন্য কারো কাছে (Layer ২)</li>
-        <li>✅ বিল্ট-ইন স্ক্রিন টাইম/প্যারেন্টাল কন্ট্রোল (Layer ৩)</li>
-        <li>✅ অ্যাকাউন্টেবিলিটি পার্টনার (Layer ৪)</li>
-      </ul>
-      <p>এই চারটি স্তর একসাথে কাজ করলে যেকোনো একটি ফাঁকি দেওয়া কঠিন হয়ে যায়, এবং সময়ের সাথে সাথে নতুন সুস্থ অভ্যাস স্থায়ী হতে শুরু করে।</p>
-
-      <div class="article-tip"><b>মনে রাখবেন:</b> ডিভাইস ব্লকিং শুধু একটি বাহ্যিক সাহায্যকারী টুল — আসল পরিবর্তন আসে ভেতরের শক্তি, আধ্যাত্মিক সংযোগ আর সঠিক অভ্যাস থেকে। এই অ্যাপের কেগেল অনুশীলন, ট্র্যাকিং এবং "তোমার শক্তি তুমি" বইটি একসাথে ব্যবহার করুন সম্পূর্ণ রিকভারি জার্নির জন্য।</div>
-    `
-  }
-};
-
-function openArticle(key) {
-  const article = ARTICLES[key];
-  if (!article) return;
-  document.getElementById('article-modal-title').textContent = article.title;
-  document.getElementById('article-modal-body').innerHTML = article.html;
-  document.getElementById('article-modal').style.display = 'flex';
-  document.querySelector('#article-modal > div:last-child').scrollTop = 0;
-  document.body.style.overflow = 'hidden';
+function fbFreeSetupTouch() {
+  const area = document.getElementById('fb-free-page-area');
+  area.ontouchstart = (e) => { fbFreeTouchStartX = e.touches[0].clientX; };
+  area.ontouchend = (e) => {
+    const dx = e.changedTouches[0].clientX - fbFreeTouchStartX;
+    if (Math.abs(dx) > 50) { dx < 0 ? fbFreeNext() : fbFreePrev(); }
+  };
+  // Keyboard support
+  document.onkeydown = (e) => {
+    const modal = document.getElementById('flipbook-modal-free');
+    if (modal.style.display === 'none') return;
+    if (e.key === 'ArrowRight') fbFreeNext();
+    if (e.key === 'ArrowLeft') fbFreePrev();
+    if (e.key === 'Escape') fbFreeClose();
+  };
 }
-
-function closeArticle() {
-  document.getElementById('article-modal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-function fbFreeNext() {}
-function fbFreePrev() {}
-function fbFreeZoomIn() {}
-function fbFreeZoomOut() {}
-function fbFreeShowPage(n) {}
-function fbFreeSetupTouch() {}
 
 // =====================
 // START
 // =====================
 loadState();
-document.getElementById('unlock-screen').style.display = 'none';
 if (!state.disclaimerSeen) {
   // Show disclaimer first
   document.getElementById('onboarding').style.display = 'none';
@@ -4438,11 +4256,6 @@ if (!state.disclaimerSeen) {
 } else if (!state.onboarded) {
   document.getElementById('disclaimer-screen').style.display = 'none';
   document.getElementById('app').style.display = 'none';
-} else if (!state.unlocked) {
-  document.getElementById('disclaimer-screen').style.display = 'none';
-  document.getElementById('onboarding').style.display = 'none';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('unlock-screen').style.display = 'flex';
 } else {
   document.getElementById('disclaimer-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'none';
@@ -4460,10 +4273,6 @@ function dismissDisclaimer() {
     if (!state.onboarded) {
       document.getElementById('app').style.display = 'none';
       document.getElementById('onboarding').style.display = 'flex';
-    } else if (!state.unlocked) {
-      document.getElementById('app').style.display = 'none';
-      document.getElementById('onboarding').style.display = 'none';
-      document.getElementById('unlock-screen').style.display = 'flex';
     } else {
       document.getElementById('onboarding').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
@@ -4472,61 +4281,70 @@ function dismissDisclaimer() {
   }, 400);
 }
 
+// "মাস্টার কন্ট্রোল: পবিত্রতার পথে" - full premium book (46 pages)
+const MASTERCONTROL_PAGES = [
+  'images/mastercontrol-01.jpg', 'images/mastercontrol-02.jpg', 'images/mastercontrol-03.jpg',
+  'images/mastercontrol-04.jpg', 'images/mastercontrol-05.jpg', 'images/mastercontrol-06.jpg',
+  'images/mastercontrol-07.jpg', 'images/mastercontrol-08.jpg', 'images/mastercontrol-09.jpg',
+  'images/mastercontrol-10.jpg', 'images/mastercontrol-11.jpg', 'images/mastercontrol-12.jpg',
+  'images/mastercontrol-13.jpg', 'images/mastercontrol-14.jpg', 'images/mastercontrol-15.jpg',
+  'images/mastercontrol-16.jpg', 'images/mastercontrol-17.jpg', 'images/mastercontrol-18.jpg',
+  'images/mastercontrol-19.jpg', 'images/mastercontrol-20.jpg', 'images/mastercontrol-21.jpg',
+  'images/mastercontrol-22.jpg', 'images/mastercontrol-23.jpg', 'images/mastercontrol-24.jpg',
+  'images/mastercontrol-25.jpg', 'images/mastercontrol-26.jpg', 'images/mastercontrol-27.jpg',
+  'images/mastercontrol-28.jpg', 'images/mastercontrol-29.jpg', 'images/mastercontrol-30.jpg',
+  'images/mastercontrol-31.jpg', 'images/mastercontrol-32.jpg', 'images/mastercontrol-33.jpg',
+  'images/mastercontrol-34.jpg', 'images/mastercontrol-35.jpg', 'images/mastercontrol-36.jpg',
+  'images/mastercontrol-37.jpg', 'images/mastercontrol-38.jpg', 'images/mastercontrol-39.jpg',
+  'images/mastercontrol-40.jpg', 'images/mastercontrol-41.jpg', 'images/mastercontrol-42.jpg',
+  'images/mastercontrol-43.jpg', 'images/mastercontrol-44.jpg', 'images/mastercontrol-45.jpg',
+  'images/mastercontrol-46.jpg'
+];
+
+// Free preview: first 5 pages of the real book
+const PREVIEW_PAGES = MASTERCONTROL_PAGES.slice(0, 5);
 
 // ========================
-// FLIPBOOK SYSTEM (app-wide unlock — book is always full once app is unlocked)
+// FLIPBOOK SYSTEM
 // ========================
+const FB_WA = '8801723037327';
+const FB_PDF_LINK = '';
+const FB_VALID_CODES = ['MCR2024','MCR-VIP1','MCR-VIP2','MCR-VIP3','MASTER01','MASTER02','MASTER03','MASTER04','MASTER05'];
+
 
 let fbPreviewTouchX = 0;
 let fbPages = [];
-let fbPreviewPage = 0;
 
 function initFlipbookPages() {
+  // Pages are loaded from MASTERCONTROL_PAGES (full book) / PREVIEW_PAGES (free 5 pages)
   if (typeof MASTERCONTROL_PAGES !== 'undefined') {
-    // Set book cover in edu screen (recovery edition)
+    // Set book cover in edu screen
     const coverImg = document.getElementById('recovery-cover-img');
     if (coverImg) coverImg.src = MASTERCONTROL_PAGES[0];
-  }
-  if (typeof PURITY_PAGES !== 'undefined') {
-    // Set book cover in edu screen (পবিত্রতার পথে)
-    const purityCoverImg = document.getElementById('purity-cover-img');
-    if (purityCoverImg) purityCoverImg.src = PURITY_PAGES[0];
+    // Set blur preview (a locked page from deeper in the book)
+    const blurImg = document.getElementById('fb-blur-img');
+    if (blurImg) blurImg.src = MASTERCONTROL_PAGES[14];
   }
 }
 
-function openFlipbook(pages) {
-  fbPages = pages && pages.length ? pages : MASTERCONTROL_PAGES;
-  const titleEl = document.getElementById('fb-modal-title');
-  if (titleEl) {
-    if (typeof PURITY_PAGES !== 'undefined' && fbPages === PURITY_PAGES) {
-      titleEl.textContent = '📖 পবিত্রতার পথে';
-    } else {
-      titleEl.textContent = '📖 রিকভারি সংস্করণ';
-    }
-  }
-  const container = document.getElementById('fb-pages-container');
-  container.innerHTML = '';
-  fbPages.forEach((src, i) => {
-    const wrapper = document.createElement('div');
-    wrapper.style.cssText = 'position:relative;border-radius:10px;overflow:hidden;background:#111;';
-    const pageNum = document.createElement('div');
-    pageNum.style.cssText = 'position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#aaa;font-size:10px;padding:2px 7px;border-radius:10px;font-family:sans-serif;z-index:2;';
-    pageNum.textContent = (i+1) + ' / ' + fbPages.length;
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = 'পেজ ' + (i+1);
-    img.draggable = false;
-    img.style.cssText = 'width:100%;display:block;-webkit-user-select:none;user-select:none;touch-action:pan-y;pointer-events:auto;';
-    img.oncontextmenu = () => false;
-    wrapper.appendChild(pageNum);
-    wrapper.appendChild(img);
-    container.appendChild(wrapper);
-  });
-  document.getElementById('fb-page-num').textContent = 'মোট ' + fbPages.length + ' পেজ';
-  const modal = document.getElementById('flipbook-modal');
-  modal.style.display = 'flex';
+function openFlipbook() {
+  document.getElementById('flipbook-modal').style.display = 'block';
   document.body.style.overflow = 'hidden';
-  document.getElementById('fb-scroll-area').scrollTop = 0;
+  fbPreviewPage = 0;
+  // Check if already unlocked - load full book, else free preview
+  const isUnlocked = localStorage.getItem('mc_recovery_unlocked') === 'true';
+  fbPages = isUnlocked ? MASTERCONTROL_PAGES : PREVIEW_PAGES;
+  fbRenderPage(0);
+  if (isUnlocked) {
+    fbShowSuccess();
+  }
+  // Swipe support
+  const wrap = document.getElementById('fb-flip-wrap');
+  wrap.addEventListener('touchstart', e => { fbPreviewTouchX = e.touches[0].clientX; }, {passive:true});
+  wrap.addEventListener('touchend', e => {
+    const diff = fbPreviewTouchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) fbChangePage(diff > 0 ? 1 : -1);
+  }, {passive:true});
 }
 
 function closeFlipbook() {
@@ -4534,8 +4352,95 @@ function closeFlipbook() {
   document.body.style.overflow = '';
 }
 
-function fbRenderPage(idx) {}
-function fbChangePage(dir) {}
+function fbRenderPage(idx) {
+  if (!fbPages.length) return;
+  document.getElementById('fb-img').src = fbPages[idx];
+  document.getElementById('fb-page-num').textContent = `${idx+1} / ${fbPages.length}`;
+  document.getElementById('fb-prev').disabled = idx === 0;
+  document.getElementById('fb-next').disabled = idx === fbPages.length - 1;
+  // Dots
+  const dots = document.getElementById('fb-dots');
+  dots.innerHTML = Array.from({length: fbPages.length}, (_, i) =>
+    `<span style="display:inline-block;width:${i===idx?16:6}px;height:6px;border-radius:3px;
+      background:${i===idx?'var(--accent)':'var(--border)'};margin:0 2px;transition:all .3s;"></span>`
+  ).join('');
+}
+
+function fbChangePage(dir) {
+  const next = fbPreviewPage + dir;
+  if (next < 0 || next >= fbPages.length) return;
+  const inner = document.getElementById('fb-flip-inner');
+  const anim = dir > 0 ? 'flipLeft' : 'flipRight';
+  inner.style.animation = `${anim} 0.45s ease forwards`;
+  setTimeout(() => {
+    fbPreviewPage = next;
+    fbRenderPage(fbPreviewPage);
+    inner.style.animation = '';
+  }, 220);
+}
+
+function fbSendWhatsApp() {
+  const msg = encodeURIComponent(
+    '🔑 *মাস্টার কন্ট্রোল রিকভারি সংস্করণ — Unlock অনুরোধ*\n\n' +
+    'আমি bKash-এ ২৯৯ টাকা পেমেন্ট করেছি।\n' +
+    'Reference: MCR\n\n' +
+    'পেমেন্টের স্ক্রিনশট সংযুক্ত করছি।\n\n' +
+    'দয়া করে আমার Unlock Code পাঠান। 🙏'
+  );
+  window.open(`https://wa.me/${FB_WA}?text=${msg}`, '_blank');
+}
+
+function fbTryUnlock() {
+  const code = document.getElementById('fb-unlock-input').value.trim().toUpperCase();
+  if (!code) { showToast('❌ কোড দিন'); return; }
+  if (FB_VALID_CODES.includes(code)) {
+    localStorage.setItem('mc_recovery_unlocked', 'true');
+    fbShowSuccess();
+    if (typeof burstConfetti === 'function') burstConfetti();
+  } else {
+    showToast('❌ কোডটি সঠিক নয়। WhatsApp-এ যোগাযোগ করুন।');
+    const inp = document.getElementById('fb-unlock-input');
+    inp.style.borderColor = 'var(--red)';
+    setTimeout(() => { inp.style.borderColor = 'var(--border)'; }, 2000);
+  }
+}
+
+function fbShowSuccess() {
+  document.getElementById('fb-lock-preview').style.display = 'none';
+  document.getElementById('fb-payment-section').style.display = 'none';
+  document.getElementById('fb-success').style.display = 'block';
+  // Switch the preview area to the full unlocked book
+  fbPages = MASTERCONTROL_PAGES;
+  fbPreviewPage = 0;
+  fbRenderPage(0);
+}
+
+function fbDownload() {
+  if (!FB_PDF_LINK) {
+    showToast('📥 PDF লিংক শীঘ্রই যোগ হবে — WhatsApp-এ যোগাযোগ করুন');
+    fbSendWhatsApp();
+    return;
+  }
+  window.open(FB_PDF_LINK, '_blank');
+}
+
+// Flipbook page animations (CSS injected via JS)
+(function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes flipLeft {
+      0%{transform:perspective(1200px) rotateY(0deg);}
+      50%{transform:perspective(1200px) rotateY(-90deg);}
+      100%{transform:perspective(1200px) rotateY(0deg);}
+    }
+    @keyframes flipRight {
+      0%{transform:perspective(1200px) rotateY(0deg);}
+      50%{transform:perspective(1200px) rotateY(90deg);}
+      100%{transform:perspective(1200px) rotateY(0deg);}
+    }
+  `;
+  document.head.appendChild(style);
+})();
 
 // PWA SERVICE WORKER — only on real hosting, not claude.ai preview
 if ('serviceWorker' in navigator && 
